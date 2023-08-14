@@ -3,7 +3,6 @@
 Here are some insights on data analysis via the tool pandas
 
 
-
 Here is an example on how to open the data
 #+begin_src jupyter-python :session  :async yes
 import pandas as pd

@@ -28,5 +28,5 @@ count = len(df[(df['multiple'] == 1) & (df['multiple'].shift(-1) == 1)])
 helper_mat = [[len(df[(df['multiple'] == i) & (df['multiple'].shift(-1) == j)]) for j in range(1,6)] for i in range(1,6)]
 #print(helper_mat[0][1]) #works!!
 final_mat = [[helper_mat[i][j]/sum(helper_mat[i]) for j in range(5)] for i in range(5)]
-print(final_mat[1][0]) # works !!
-#print(sum(helper_mat[0]))
+#print(final_mat[1][0]) # works !!
+print(final_mat)
