@@ -1,0 +1,332 @@
+#+title: Cash
+* Learn Pandas
+Here are some insights on data analysis via the tool pandas
+
+
+
+Here is an example on how to open the data
+#+begin_src jupyter-python :session  :async yes
+import pandas as pd
+import numpy as np
+data = pd.read_excel('TLV22_7_23.xlsx')
+#+end_src
+** How to access a column
+
+Here is how to access a column in python
+#+begin_src jupyter-python :session  :async yes
+data.iloc[0:3,1]
+#+end_src
+** Generate dates
+Here is how to generate sequence of dates
+#+begin_src jupyter-python :session  :async yes
+dates = pd.date_range("20130101", periods=6)
+#+end_src
+** How to generate a plot
+Here are some snippet that can help me in the future
+
+#+begin_src python
+import matplotlib.pyplot as plt
+import pandas as pd
+#+end_src
+
+#+RESULTS:
+: None
+
+
+Now , what to do ?
+
+#+begin_src python
+data = pd.read_excel("TLV22_7_23.xlsx", index_col=0, parse_dates=True)
+#+end_src
+Somethings that are important to note
+
+The usage of the index_col and parse_dates parameters of the read_csv function to define the first (0th) column as index of the resulting DataFrame and convert the dates in the column to Timestamp objects, respectively.
+
+
+
+
+#+begin_src python
+import pandas as pd
+import matplotlib.pyplot as plt
+
+air_quality = pd.read_excel("TLV22_7_23.xlsx", index_col=0, parse_dates=True)
+air_quality.plot()
+plt.show()
+#+end_src
+
+#+RESULTS:
+: None
+
+if I want to select specific column I should do the following
+
+#+begin_src python
+
+import pandas as pd
+import matplotlib.pyplot as plt
+
+air_quality = pd.read_excel("TLV22_7_23.xlsx", index_col=0, parse_dates=True)
+air_quality.iloc[:,0:6].plot()
+plt.show()
+#+end_src
+
+#+RESULTS:
+: None
+** subplots
+note the following code
+
+
+#+begin_src python
+
+import pandas as pd
+import matplotlib.pyplot as plt
+
+air_quality = pd.read_excel("TLV22_7_23.xlsx", index_col=0, parse_dates=True)
+axs = air_quality.iloc[:,0:3].plot.area(figsize=(12, 4), subplots=True)
+plt.show()
+#+end_src
+
+#+RESULTS:
+: None
+** Series
+In This tutorial I'll learn how to use the series
+
+Series is a column in a DataFrame panda data structure
+
+#+begin_src python :results output
+import pandas as pd
+a = [1, 7, 2]
+myvar = pd.Series(a)
+print(myvar)
+#+end_src
+
+#+RESULTS:
+: 0    1
+: 1    7
+: 2    2
+: dtype: int64
+
+Some more examples on how to create a pandas Series data structure
+#+begin_src python :results output
+import pandas as pd
+a = [1, 7, 2]
+myvar = pd.Series(a, index = ["x", "y", "z"])
+print(myvar)
+#+end_src
+
+#+RESULTS:
+: x    1
+: y    7
+: z    2
+: dtype: int64
+
+
+#+begin_src python :results output
+import pandas as pd
+calories = {"day1": 420, "day2": 380, "day3": 390}
+myvar = pd.Series(calories)
+print(myvar)
+#+end_src
+
+#+RESULTS:
+: day1    420
+: day2    380
+: day3    390
+: dtype: int64
+** DataFrames
+Note that couple of Series data structures create create a single DataFrame
+
+#+begin_src python :results output
+import pandas as pd
+data = {
+  "calories": [420, 380, 390],
+  "duration": [50, 40, 45]
+}
+myvar = pd.DataFrame(data)
+print("basic Print")
+print(myvar)
+print("Print a row")
+print(myvar.loc[0])
+print("Print a specific columns ")
+print(myvar.loc[[0,1]])
+#+end_src
+
+#+RESULTS:
+#+begin_example
+basic Print
+   calories  duration
+0       420        50
+1       380        40
+2       390        45
+Print a row
+calories    420
+duration     50
+Name: 0, dtype: int64
+Print a specific columns
+   calories  duration
+0       420        50
+1       380        40
+#+end_example
+
+important to note
+Note: When using [], the result is a Pandas DataFrame.
+*** More ideas
+If you'll want to index stuff then you could use
+
+#+begin_src python :results output
+import pandas as pd
+data = {
+  "calories": [420, 380, 390],
+  "duration": [50, 40, 45]
+}
+df = pd.DataFrame(data, index = ["day1", "day2", "day3"])
+print(df)
+print("get a column ")
+print(df["calories"])
+print("print a row")
+print(df.loc["day2"])
+#+end_src
+
+#+RESULTS:
+#+begin_example
+      calories  duration
+day1       420        50
+day2       380        40
+day3       390        45
+barak
+day1    420
+day2    380
+day3    390
+Name: calories, dtype: int64
+print a row
+calories    380
+duration     40
+Name: day2, dtype: int64
+#+end_example
+*** Another sample
+Here is another dataframe pandas data set
+
+#+begin_src python :results output
+import pandas as pd
+data = {
+  "Duration":{
+    "0":60,
+    "1":60,
+    "2":60,
+    "3":45,
+    "4":45,
+    "5":60
+  },
+  "Pulse":{
+    "0":110,
+    "1":117,
+    "2":103,
+    "3":109,
+    "4":117,
+    "5":102
+  },
+  "Maxpulse":{
+    "0":130,
+    "1":145,
+    "2":135,
+    "3":175,
+    "4":148,
+    "5":127
+  },
+  "Calories":{
+    "0":409,
+    "1":479,
+    "2":340,
+    "3":282,
+    "4":406,
+    "5":300
+  }
+}
+df = pd.DataFrame(data)
+print(df)
+print("get the duration column")
+print(df["Duration"])
+print("get the 4 row")
+print(df.loc["4"]) # note that this is a string !!
+#+end_src
+
+#+RESULTS:
+#+begin_example
+   Duration  Pulse  Maxpulse  Calories
+0        60    110       130       409
+1        60    117       145       479
+2        60    103       135       340
+3        45    109       175       282
+4        45    117       148       406
+5        60    102       127       300
+get the duration column
+0    60
+1    60
+2    60
+3    45
+4    45
+5    60
+Name: Duration, dtype: int64
+get the 4 row
+Duration     45
+Pulse       117
+Maxpulse    148
+Calories    406
+Name: 4, dtype: int64
+#+end_example
+* Some Practical example
+** first process (Calculate F column)
+Here is a practical example where I search for the increment
+#+begin_src python :results output
+import pandas as pd
+data = {
+  "Duration":{
+    "0":60,
+    "1":60,
+    "2":60,
+    "3":45,
+    "4":45,
+    "5":60
+  }
+}
+df = pd.DataFrame(data)
+#print(df)
+#print("get the duration column")
+#print(df["Duration"])
+#processing
+result = [ (y-x)/x for x,y in zip(df["Duration"],df["Duration"][1:])]
+print(result)
+result2 = [ x for x in df["Duration"][1:]]
+print(result2)
+
+#+end_src
+
+#+RESULTS:
+: [0.0, 0.0, 0.3333333333333333, 0.0, -0.25]
+: [60, 60, 45, 45, 60]
+** Second process (Calculate G)
+In order to use rank.avg in python from excel we'll use .rank() function
+#+begin_src python :results output
+import pandas as pd
+data = {
+  "Duration":{
+    "0":60,
+    "1":60,
+    "2":60,
+    "3":45,
+    "4":45,
+    "5":60
+  }
+}
+df = pd.DataFrame(data)
+df["avg_rank"] = df["Duration"].rank()
+print(df)
+#+end_src
+
+#+RESULTS:
+:    Duration  avg_rank
+: 0        60       4.5
+: 1        60       4.5
+: 2        60       4.5
+: 3        45       1.5
+: 4        45       1.5
+: 5        60       4.5
