@@ -5,4 +5,4 @@
 
 Added some insights 
 
-here is [https://barakdiker123.github.io/CashAnalysis/](Tutorial)
+here is [Tutorial](https://barakdiker123.github.io/CashAnalysis/)
