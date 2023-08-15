@@ -28,5 +28,5 @@ Currently under development , from index stock option can create 5 by 5 table th
 
 ## Credits 
 
-Barak Nadav Diker 
-Yeshuron 
+* Barak Nadav Diker 
+* Yeshuron 
