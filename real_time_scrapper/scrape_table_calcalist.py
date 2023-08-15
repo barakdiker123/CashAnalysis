@@ -12,7 +12,8 @@ def scraper_data_stock(url, driver):
 
     soup = BeautifulSoup(html3, "html.parser")
     stock_last_gate = soup.find_all(id='stockPageMainFrame')
-    print(float(stock_last_gate[0].div.div.contents[5].table.tr.contents[3].table.tr.contents[3].string.replace(',', '')))
+    if(len(stock_last_gate) >= 1):
+        print(float(stock_last_gate[0].div.div.contents[5].table.tr.contents[3].table.tr.contents[3].string.replace(',', '')))
 
 
 url_table = "https://www.calcalist.co.il/stocks/home/0,7340,L-3961-198--2,00.html"
@@ -22,6 +23,17 @@ html = driver.execute_script("return document.documentElement.innerHTML")
 soup = BeautifulSoup(html, "html.parser")
 big_table_index = soup.find_all(id='ReccTblContent')[0].table.tbody
 
-new_stock_url = "https://www.calcalist.co.il" + quote(big_table_index.tr.td.div.div.a["href"])
+#print(big_table_index.find_all(attrs={"class" : "row"}))
 
-scraper_data_stock(new_stock_url , driver)
+
+for sp in big_table_index.find_all(attrs={"class" : "row"}):
+    new_stock_url = "https://www.calcalist.co.il" + quote(sp.td.div.div.a["href"])
+    scraper_data_stock(new_stock_url , driver)
+    #print(new_stock_url)
+    #print(sp.td.div.div.a["href"])
+
+#new_stock_url = "https://www.calcalist.co.il" + quote(big_table_index.tr.td.div.div.a["href"])
+
+#scraper_data_stock(new_stock_url , driver)
+
+# coollllllllllllll worksssss
