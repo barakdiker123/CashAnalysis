@@ -11,8 +11,18 @@ Here are some simple analysis pictures
 
 ![First analyis](pictures/Figure_1.png)
 ![Some Analyzed data](pictures/Some_analysis.png)
+Some Analysis on Data 
 ![show data](pictures/first_data_show.png)
+
+Here the scraper only take couple of components of Tel-aviv 35 index and extract the index 
+and takes also the index of Tel-aviv 35 index itself
+
 ![Gif sample](pictures/sample123.gif)
+
+Here is the scraper at action , we can see that he takes all the components from Tel-Aviv 35 
+index and process add all the indexes to the program 
+
+
 ![Gif sample2](pictures/sample2.gif)
 
 ## Features 
