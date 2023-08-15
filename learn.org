@@ -329,3 +329,83 @@ print(df)
 : 3        45       1.5
 : 4        45       1.5
 : 5        60       4.5
+* Scrapper Learn
+In this section I'll learn how to create a scraper that uses python with library beautifulSoup4 and I'll Import the the from the website calcalist
+** Import HTML data
+Here is how to import data via python
+#+begin_src python :results output
+from bs4 import BeautifulSoup
+from urllib.request import urlopen
+url = "http://olympus.realpython.org/profiles/dionysus"
+page = urlopen(url)
+html = page.read().decode("utf-8")
+soup = BeautifulSoup(html, "html.parser")
+data = soup.find_all("h2")
+print(data[0].string)
+#+end_src
+
+#+RESULTS:
+: Name: Dionysus
+
+
+Please note that we'll do the data processing on the "data" object from the code above
+
+** BeautifulSoup
+Here are some code snipprt
+#+begin_src python :results output
+from bs4 import BeautifulSoup
+from urllib.request import urlopen
+url = "http://olympus.realpython.org/profiles/dionysus"
+page = urlopen(url)
+html = page.read().decode("utf-8")
+soup = BeautifulSoup(html, "html.parser")
+print(soup.prettify())
+#+end_src
+
+#+RESULTS:
+#+begin_example
+<html>
+ <head>
+  <title>
+   Profile: Dionysus
+  </title>
+ </head>
+ <body bgcolor="yellow">
+  <center>
+   <br/>
+   <br/>
+   <img src="/static/dionysus.jpg"/>
+   <h2>
+    Name: Dionysus
+   </h2>
+   <img src="/static/grapes.png"/>
+   <br/>
+   <br/>
+   Hometown: Mount Olympus
+   <br/>
+   <br/>
+   Favorite animal: Leopard
+   <br/>
+   <br/>
+   Favorite Color: Wine
+  </center>
+ </body>
+</html>
+
+#+end_example
+
+Another notable examples are the following one to get a specific element
+
+#+begin_src python :results output
+from bs4 import BeautifulSoup
+from urllib.request import urlopen
+url = "http://olympus.realpython.org/profiles/dionysus"
+page = urlopen(url)
+html = page.read().decode("utf-8")
+soup = BeautifulSoup(html, "html.parser")
+print(soup.head.title)
+print(soup.body.center.find_all("img")[0]["src"])
+#+end_src
+** Practical scrapper
+here is an example of extracting data from calcalist
+specificly , extracting "tel-aviv 35 stock index status"
