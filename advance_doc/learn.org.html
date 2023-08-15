@@ -1,0 +1,385 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+"http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en">
+<head>
+<!-- 2023-08-14 Mon 16:28 -->
+<meta http-equiv="Content-Type" content="text/html;charset=utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Cash</title>
+<meta name="author" content="Barak-Nadav Diker" />
+<meta name="generator" content="Org Mode" />
+<link rel="stylesheet" type="text/css" href="https://fniessen.github.io/org-html-themes/src/readtheorg_theme/css/htmlize.css"/>
+<link rel="stylesheet" type="text/css" href="https://fniessen.github.io/org-html-themes/src/readtheorg_theme/css/readtheorg.css"/>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.3/jquery.min.js"></script>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.4/js/bootstrap.min.js"></script>
+<script type="text/javascript" src="https://fniessen.github.io/org-html-themes/src/lib/js/jquery.stickytableheaders.min.js"></script>
+<script type="text/javascript" src="https://fniessen.github.io/org-html-themes/src/readtheorg_theme/js/readtheorg.js"></script>
+</head>
+<body>
+<div id="content" class="content">
+<h1 class="title">Cash</h1>
+<div id="table-of-contents" role="doc-toc">
+<h2>Table of Contents</h2>
+<div id="text-table-of-contents" role="doc-toc">
+<ul>
+<li><a href="#org5ee0237">1. Learn Pandas</a>
+<ul>
+<li><a href="#orgdb0e0fb">1.1. How to access a column</a></li>
+<li><a href="#orgd365d58">1.2. Generate dates</a></li>
+<li><a href="#org5351848">1.3. How to generate a plot</a></li>
+<li><a href="#org387e5e4">1.4. subplots</a></li>
+<li><a href="#org3c4e9ab">1.5. Series</a></li>
+<li><a href="#org47e96e9">1.6. DataFrames</a>
+<ul>
+<li><a href="#orge829606">1.6.1. More ideas</a></li>
+<li><a href="#orgc305b96">1.6.2. Another sample</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li><a href="#org81ea8d2">2. Some Practical example</a>
+<ul>
+<li><a href="#orgb6784ad">2.1. first process (Calculate F column)</a></li>
+<li><a href="#orgcfb9e31">2.2. Second process (Calculate G)</a></li>
+</ul>
+</li>
+</ul>
+</div>
+</div>
+
+<div id="outline-container-org5ee0237" class="outline-2">
+<h2 id="org5ee0237"><span class="section-number-2">1.</span> Learn Pandas</h2>
+<div class="outline-text-2" id="text-1">
+<p>
+Here are some insights on data analysis via the tool pandas
+</p>
+
+
+<p>
+Here is an example on how to open the data
+</p>
+<div class="org-src-container">
+<pre class="src src-jupyter-python"><span style="color: #9d0006;">import</span> pandas <span style="color: #9d0006;">as</span> pd
+<span style="color: #9d0006;">import</span> numpy <span style="color: #9d0006;">as</span> np
+<span style="color: #076678;">data</span> = pd.read_excel(<span style="color: #79740e;">'TLV22_7_23.xlsx'</span>)
+</pre>
+</div>
+</div>
+<div id="outline-container-orgdb0e0fb" class="outline-3">
+<h3 id="orgdb0e0fb"><span class="section-number-3">1.1.</span> How to access a column</h3>
+<div class="outline-text-3" id="text-1-1">
+<p>
+Here is how to access a column in python
+</p>
+<div class="org-src-container">
+<pre class="src src-jupyter-python">data.iloc[<span style="color: #8f3f71; font-weight: bold;">0</span>:<span style="color: #8f3f71; font-weight: bold;">3</span>,<span style="color: #8f3f71; font-weight: bold;">1</span>]
+</pre>
+</div>
+</div>
+</div>
+<div id="outline-container-orgd365d58" class="outline-3">
+<h3 id="orgd365d58"><span class="section-number-3">1.2.</span> Generate dates</h3>
+<div class="outline-text-3" id="text-1-2">
+<p>
+Here is how to generate sequence of dates
+</p>
+<div class="org-src-container">
+<pre class="src src-jupyter-python"><span style="color: #076678;">dates</span> = pd.date_range(<span style="color: #79740e;">"20130101"</span>, periods=<span style="color: #8f3f71; font-weight: bold;">6</span>)
+</pre>
+</div>
+</div>
+</div>
+<div id="outline-container-org5351848" class="outline-3">
+<h3 id="org5351848"><span class="section-number-3">1.3.</span> How to generate a plot</h3>
+<div class="outline-text-3" id="text-1-3">
+<p>
+Here are some snippet that can help me in the future
+</p>
+
+<div class="org-src-container">
+<pre class="src src-python"><span style="color: #9d0006;">import</span> matplotlib.pyplot <span style="color: #9d0006;">as</span> plt
+<span style="color: #9d0006;">import</span> pandas <span style="color: #9d0006;">as</span> pd
+</pre>
+</div>
+
+
+<p>
+Now , what to do ?
+</p>
+
+<div class="org-src-container">
+<pre class="src src-python"><span style="color: #076678;">data</span> = pd.read_excel(<span style="color: #79740e;">"TLV22_7_23.xlsx"</span>, index_col=<span style="color: #8f3f71; font-weight: bold;">0</span>, parse_dates=<span style="color: #8f3f71;">True</span>)
+</pre>
+</div>
+<p>
+Somethings that are important to note
+</p>
+
+<p>
+The usage of the index<sub>col</sub> and parse<sub>dates</sub> parameters of the read<sub>csv</sub> function to define the first (0th) column as index of the resulting DataFrame and convert the dates in the column to Timestamp objects, respectively.
+</p>
+
+
+
+
+<div class="org-src-container">
+<pre class="src src-python"><span style="color: #9d0006;">import</span> pandas <span style="color: #9d0006;">as</span> pd
+<span style="color: #9d0006;">import</span> matplotlib.pyplot <span style="color: #9d0006;">as</span> plt
+
+<span style="color: #076678;">air_quality</span> = pd.read_excel(<span style="color: #79740e;">"TLV22_7_23.xlsx"</span>, index_col=<span style="color: #8f3f71; font-weight: bold;">0</span>, parse_dates=<span style="color: #8f3f71;">True</span>)
+air_quality.plot()
+plt.show()
+</pre>
+</div>
+
+<p>
+if I want to select specific column I should do the following
+</p>
+
+<div class="org-src-container">
+<pre class="src src-python">
+<span style="color: #9d0006;">import</span> pandas <span style="color: #9d0006;">as</span> pd
+<span style="color: #9d0006;">import</span> matplotlib.pyplot <span style="color: #9d0006;">as</span> plt
+
+<span style="color: #076678;">air_quality</span> = pd.read_excel(<span style="color: #79740e;">"TLV22_7_23.xlsx"</span>, index_col=<span style="color: #8f3f71; font-weight: bold;">0</span>, parse_dates=<span style="color: #8f3f71;">True</span>)
+air_quality.iloc[:,<span style="color: #8f3f71; font-weight: bold;">0</span>:<span style="color: #8f3f71; font-weight: bold;">6</span>].plot()
+plt.show()
+</pre>
+</div>
+</div>
+</div>
+<div id="outline-container-org387e5e4" class="outline-3">
+<h3 id="org387e5e4"><span class="section-number-3">1.4.</span> subplots</h3>
+<div class="outline-text-3" id="text-1-4">
+<p>
+note the following code
+</p>
+
+
+<div class="org-src-container">
+<pre class="src src-python">
+<span style="color: #9d0006;">import</span> pandas <span style="color: #9d0006;">as</span> pd
+<span style="color: #9d0006;">import</span> matplotlib.pyplot <span style="color: #9d0006;">as</span> plt
+
+<span style="color: #076678;">air_quality</span> = pd.read_excel(<span style="color: #79740e;">"TLV22_7_23.xlsx"</span>, index_col=<span style="color: #8f3f71; font-weight: bold;">0</span>, parse_dates=<span style="color: #8f3f71;">True</span>)
+axs = air_quality.iloc[:,<span style="color: #8f3f71; font-weight: bold;">0</span>:<span style="color: #8f3f71; font-weight: bold;">3</span>].plot.area(figsize=(<span style="color: #8f3f71; font-weight: bold;">12</span>, <span style="color: #8f3f71; font-weight: bold;">4</span>), subplots=<span style="color: #8f3f71;">True</span>)
+plt.show()
+</pre>
+</div>
+</div>
+</div>
+<div id="outline-container-org3c4e9ab" class="outline-3">
+<h3 id="org3c4e9ab"><span class="section-number-3">1.5.</span> Series</h3>
+<div class="outline-text-3" id="text-1-5">
+<p>
+In This tutorial I&rsquo;ll learn how to use the series
+</p>
+
+<p>
+Series is a column in a DataFrame panda data structure
+</p>
+
+<div class="org-src-container">
+<pre class="src src-python"><span style="color: #9d0006;">import</span> pandas <span style="color: #9d0006;">as</span> pd
+<span style="color: #076678;">a</span> = [<span style="color: #8f3f71; font-weight: bold;">1</span>, <span style="color: #8f3f71; font-weight: bold;">7</span>, <span style="color: #8f3f71; font-weight: bold;">2</span>]
+<span style="color: #076678;">myvar</span> = pd.Series(a)
+<span style="color: #af3a03;">print</span>(myvar)
+</pre>
+</div>
+
+<p>
+Some more examples on how to create a pandas Series data structure
+</p>
+<div class="org-src-container">
+<pre class="src src-python"><span style="color: #9d0006;">import</span> pandas <span style="color: #9d0006;">as</span> pd
+<span style="color: #076678;">a</span> = [<span style="color: #8f3f71; font-weight: bold;">1</span>, <span style="color: #8f3f71; font-weight: bold;">7</span>, <span style="color: #8f3f71; font-weight: bold;">2</span>]
+<span style="color: #076678;">myvar</span> = pd.Series(a, index = [<span style="color: #79740e;">"x"</span>, <span style="color: #79740e;">"y"</span>, <span style="color: #79740e;">"z"</span>])
+<span style="color: #af3a03;">print</span>(myvar)
+</pre>
+</div>
+
+
+<div class="org-src-container">
+<pre class="src src-python"><span style="color: #9d0006;">import</span> pandas <span style="color: #9d0006;">as</span> pd
+<span style="color: #076678;">calories</span> = {<span style="color: #79740e;">"day1"</span>: <span style="color: #8f3f71; font-weight: bold;">420</span>, <span style="color: #79740e;">"day2"</span>: <span style="color: #8f3f71; font-weight: bold;">380</span>, <span style="color: #79740e;">"day3"</span>: <span style="color: #8f3f71; font-weight: bold;">390</span>}
+<span style="color: #076678;">myvar</span> = pd.Series(calories)
+<span style="color: #af3a03;">print</span>(myvar)
+</pre>
+</div>
+</div>
+</div>
+<div id="outline-container-org47e96e9" class="outline-3">
+<h3 id="org47e96e9"><span class="section-number-3">1.6.</span> DataFrames</h3>
+<div class="outline-text-3" id="text-1-6">
+<p>
+Note that couple of Series data structures create create a single DataFrame
+</p>
+
+<div class="org-src-container">
+<pre class="src src-python"><span style="color: #9d0006;">import</span> pandas <span style="color: #9d0006;">as</span> pd
+<span style="color: #076678;">data</span> = {
+  <span style="color: #79740e;">"calories"</span>: [<span style="color: #8f3f71; font-weight: bold;">420</span>, <span style="color: #8f3f71; font-weight: bold;">380</span>, <span style="color: #8f3f71; font-weight: bold;">390</span>],
+  <span style="color: #79740e;">"duration"</span>: [<span style="color: #8f3f71; font-weight: bold;">50</span>, <span style="color: #8f3f71; font-weight: bold;">40</span>, <span style="color: #8f3f71; font-weight: bold;">45</span>]
+}
+<span style="color: #076678;">myvar</span> = pd.DataFrame(data)
+<span style="color: #af3a03;">print</span>(<span style="color: #79740e;">"basic Print"</span>)
+<span style="color: #af3a03;">print</span>(myvar)
+<span style="color: #af3a03;">print</span>(<span style="color: #79740e;">"Print a row"</span>)
+<span style="color: #af3a03;">print</span>(myvar.loc[<span style="color: #8f3f71; font-weight: bold;">0</span>])
+<span style="color: #af3a03;">print</span>(<span style="color: #79740e;">"Print a specific columns "</span>)
+<span style="color: #af3a03;">print</span>(myvar.loc[[<span style="color: #8f3f71; font-weight: bold;">0</span>,<span style="color: #8f3f71; font-weight: bold;">1</span>]])
+</pre>
+</div>
+
+<p>
+important to note
+Note: When using [], the result is a Pandas DataFrame.
+</p>
+</div>
+<div id="outline-container-orge829606" class="outline-4">
+<h4 id="orge829606"><span class="section-number-4">1.6.1.</span> More ideas</h4>
+<div class="outline-text-4" id="text-1-6-1">
+<p>
+If you&rsquo;ll want to index stuff then you could use
+</p>
+
+<div class="org-src-container">
+<pre class="src src-python"><span style="color: #9d0006;">import</span> pandas <span style="color: #9d0006;">as</span> pd
+<span style="color: #076678;">data</span> = {
+  <span style="color: #79740e;">"calories"</span>: [<span style="color: #8f3f71; font-weight: bold;">420</span>, <span style="color: #8f3f71; font-weight: bold;">380</span>, <span style="color: #8f3f71; font-weight: bold;">390</span>],
+  <span style="color: #79740e;">"duration"</span>: [<span style="color: #8f3f71; font-weight: bold;">50</span>, <span style="color: #8f3f71; font-weight: bold;">40</span>, <span style="color: #8f3f71; font-weight: bold;">45</span>]
+}
+<span style="color: #076678;">df</span> = pd.DataFrame(data, index = [<span style="color: #79740e;">"day1"</span>, <span style="color: #79740e;">"day2"</span>, <span style="color: #79740e;">"day3"</span>])
+<span style="color: #af3a03;">print</span>(df)
+<span style="color: #af3a03;">print</span>(<span style="color: #79740e;">"get a column "</span>)
+<span style="color: #af3a03;">print</span>(df[<span style="color: #79740e;">"calories"</span>])
+<span style="color: #af3a03;">print</span>(<span style="color: #79740e;">"print a row"</span>)
+<span style="color: #af3a03;">print</span>(df.loc[<span style="color: #79740e;">"day2"</span>])
+</pre>
+</div>
+</div>
+</div>
+<div id="outline-container-orgc305b96" class="outline-4">
+<h4 id="orgc305b96"><span class="section-number-4">1.6.2.</span> Another sample</h4>
+<div class="outline-text-4" id="text-1-6-2">
+<p>
+Here is another dataframe pandas data set
+</p>
+
+<div class="org-src-container">
+<pre class="src src-python"><span style="color: #9d0006;">import</span> pandas <span style="color: #9d0006;">as</span> pd
+<span style="color: #076678;">data</span> = {
+  <span style="color: #79740e;">"Duration"</span>:{
+    <span style="color: #79740e;">"0"</span>:<span style="color: #8f3f71; font-weight: bold;">60</span>,
+    <span style="color: #79740e;">"1"</span>:<span style="color: #8f3f71; font-weight: bold;">60</span>,
+    <span style="color: #79740e;">"2"</span>:<span style="color: #8f3f71; font-weight: bold;">60</span>,
+    <span style="color: #79740e;">"3"</span>:<span style="color: #8f3f71; font-weight: bold;">45</span>,
+    <span style="color: #79740e;">"4"</span>:<span style="color: #8f3f71; font-weight: bold;">45</span>,
+    <span style="color: #79740e;">"5"</span>:<span style="color: #8f3f71; font-weight: bold;">60</span>
+  },
+  <span style="color: #79740e;">"Pulse"</span>:{
+    <span style="color: #79740e;">"0"</span>:<span style="color: #8f3f71; font-weight: bold;">110</span>,
+    <span style="color: #79740e;">"1"</span>:<span style="color: #8f3f71; font-weight: bold;">117</span>,
+    <span style="color: #79740e;">"2"</span>:<span style="color: #8f3f71; font-weight: bold;">103</span>,
+    <span style="color: #79740e;">"3"</span>:<span style="color: #8f3f71; font-weight: bold;">109</span>,
+    <span style="color: #79740e;">"4"</span>:<span style="color: #8f3f71; font-weight: bold;">117</span>,
+    <span style="color: #79740e;">"5"</span>:<span style="color: #8f3f71; font-weight: bold;">102</span>
+  },
+  <span style="color: #79740e;">"Maxpulse"</span>:{
+    <span style="color: #79740e;">"0"</span>:<span style="color: #8f3f71; font-weight: bold;">130</span>,
+    <span style="color: #79740e;">"1"</span>:<span style="color: #8f3f71; font-weight: bold;">145</span>,
+    <span style="color: #79740e;">"2"</span>:<span style="color: #8f3f71; font-weight: bold;">135</span>,
+    <span style="color: #79740e;">"3"</span>:<span style="color: #8f3f71; font-weight: bold;">175</span>,
+    <span style="color: #79740e;">"4"</span>:<span style="color: #8f3f71; font-weight: bold;">148</span>,
+    <span style="color: #79740e;">"5"</span>:<span style="color: #8f3f71; font-weight: bold;">127</span>
+  },
+  <span style="color: #79740e;">"Calories"</span>:{
+    <span style="color: #79740e;">"0"</span>:<span style="color: #8f3f71; font-weight: bold;">409</span>,
+    <span style="color: #79740e;">"1"</span>:<span style="color: #8f3f71; font-weight: bold;">479</span>,
+    <span style="color: #79740e;">"2"</span>:<span style="color: #8f3f71; font-weight: bold;">340</span>,
+    <span style="color: #79740e;">"3"</span>:<span style="color: #8f3f71; font-weight: bold;">282</span>,
+    <span style="color: #79740e;">"4"</span>:<span style="color: #8f3f71; font-weight: bold;">406</span>,
+    <span style="color: #79740e;">"5"</span>:<span style="color: #8f3f71; font-weight: bold;">300</span>
+  }
+}
+<span style="color: #076678;">df</span> = pd.DataFrame(data)
+<span style="color: #af3a03;">print</span>(df)
+<span style="color: #af3a03;">print</span>(<span style="color: #79740e;">"get the duration column"</span>)
+<span style="color: #af3a03;">print</span>(df[<span style="color: #79740e;">"Duration"</span>])
+<span style="color: #af3a03;">print</span>(<span style="color: #79740e;">"get the 4 row"</span>)
+<span style="color: #af3a03;">print</span>(df.loc[<span style="color: #79740e;">"4"</span>]) <span style="color: #a89984;"># </span><span style="color: #a89984;">note that this is a string !!</span>
+</pre>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div id="outline-container-org81ea8d2" class="outline-2">
+<h2 id="org81ea8d2"><span class="section-number-2">2.</span> Some Practical example</h2>
+<div class="outline-text-2" id="text-2">
+</div>
+<div id="outline-container-orgb6784ad" class="outline-3">
+<h3 id="orgb6784ad"><span class="section-number-3">2.1.</span> first process (Calculate F column)</h3>
+<div class="outline-text-3" id="text-2-1">
+<p>
+Here is a practical example where I search for the increment
+</p>
+<div class="org-src-container">
+<pre class="src src-python"><span style="color: #9d0006;">import</span> pandas <span style="color: #9d0006;">as</span> pd
+<span style="color: #076678;">data</span> = {
+  <span style="color: #79740e;">"Duration"</span>:{
+    <span style="color: #79740e;">"0"</span>:<span style="color: #8f3f71; font-weight: bold;">60</span>,
+    <span style="color: #79740e;">"1"</span>:<span style="color: #8f3f71; font-weight: bold;">60</span>,
+    <span style="color: #79740e;">"2"</span>:<span style="color: #8f3f71; font-weight: bold;">60</span>,
+    <span style="color: #79740e;">"3"</span>:<span style="color: #8f3f71; font-weight: bold;">45</span>,
+    <span style="color: #79740e;">"4"</span>:<span style="color: #8f3f71; font-weight: bold;">45</span>,
+    <span style="color: #79740e;">"5"</span>:<span style="color: #8f3f71; font-weight: bold;">60</span>
+  }
+}
+<span style="color: #076678;">df</span> = pd.DataFrame(data)
+<span style="color: #a89984;">#</span><span style="color: #a89984;">print(df)</span>
+<span style="color: #a89984;">#</span><span style="color: #a89984;">print("get the duration column")</span>
+<span style="color: #a89984;">#</span><span style="color: #a89984;">print(df["Duration"])</span>
+<span style="color: #a89984;">#</span><span style="color: #a89984;">processing</span>
+<span style="color: #076678;">result</span> = [ (y-x)/x <span style="color: #9d0006;">for</span> x,y <span style="color: #9d0006;">in</span> <span style="color: #af3a03;">zip</span>(df[<span style="color: #79740e;">"Duration"</span>],df[<span style="color: #79740e;">"Duration"</span>][<span style="color: #8f3f71; font-weight: bold;">1</span>:])]
+<span style="color: #af3a03;">print</span>(result)
+<span style="color: #076678;">result2</span> = [ x <span style="color: #9d0006;">for</span> x <span style="color: #9d0006;">in</span> df[<span style="color: #79740e;">"Duration"</span>][<span style="color: #8f3f71; font-weight: bold;">1</span>:]]
+<span style="color: #af3a03;">print</span>(result2)
+</pre>
+</div>
+</div>
+</div>
+<div id="outline-container-orgcfb9e31" class="outline-3">
+<h3 id="orgcfb9e31"><span class="section-number-3">2.2.</span> Second process (Calculate G)</h3>
+<div class="outline-text-3" id="text-2-2">
+<p>
+In order to use rank.avg in python from excel we&rsquo;ll use .rank() function
+</p>
+<div class="org-src-container">
+<pre class="src src-python"><span style="color: #9d0006;">import</span> pandas <span style="color: #9d0006;">as</span> pd
+<span style="color: #076678;">data</span> = {
+  <span style="color: #79740e;">"Duration"</span>:{
+    <span style="color: #79740e;">"0"</span>:<span style="color: #8f3f71; font-weight: bold;">60</span>,
+    <span style="color: #79740e;">"1"</span>:<span style="color: #8f3f71; font-weight: bold;">60</span>,
+    <span style="color: #79740e;">"2"</span>:<span style="color: #8f3f71; font-weight: bold;">60</span>,
+    <span style="color: #79740e;">"3"</span>:<span style="color: #8f3f71; font-weight: bold;">45</span>,
+    <span style="color: #79740e;">"4"</span>:<span style="color: #8f3f71; font-weight: bold;">45</span>,
+    <span style="color: #79740e;">"5"</span>:<span style="color: #8f3f71; font-weight: bold;">60</span>
+  }
+}
+<span style="color: #076678;">df</span> = pd.DataFrame(data)
+<span style="color: #076678;">df</span>[<span style="color: #79740e;">"avg_rank"</span>] = df[<span style="color: #79740e;">"Duration"</span>].rank()
+<span style="color: #af3a03;">print</span>(df)
+</pre>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div id="postamble" class="status">
+<p class="author">Author: Barak-Nadav Diker</p>
+<p class="date">Created: 2023-08-14 Mon 16:28</p>
+</div>
+</body>
+</html>
