@@ -7,6 +7,12 @@ Added some insights
 
 here is [Tutorial](https://barakdiker123.github.io/CashAnalysis/)
 
+Here are some simple analysis pictures 
+
+![First analyis](pictures/Figure_1.png)
+![Some Analyzed data](pictures/Some_analysis.png)
+![show data](pictures/first_data_show.png)
+
 ## Features 
 
 Here are some utilities of this library 
