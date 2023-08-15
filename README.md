@@ -12,6 +12,7 @@ Here are some simple analysis pictures
 ![First analyis](pictures/Figure_1.png)
 ![Some Analyzed data](pictures/Some_analysis.png)
 ![show data](pictures/first_data_show.png)
+![Gif sample](pictures/sample123.gif)
 
 ## Features 
 
