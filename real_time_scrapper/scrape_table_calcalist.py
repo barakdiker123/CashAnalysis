@@ -28,7 +28,7 @@ big_table_index = soup.find_all(id='ReccTblContent')[0].table.tbody
 
 for sp in big_table_index.find_all(attrs={"class" : "row"}):
     new_stock_url = "https://www.calcalist.co.il" + quote(sp.td.div.div.a["href"])
-    scraper_data_stock(new_stock_url , driver)
+    scraper_data_stock(new_stock_url, driver)
     #print(new_stock_url)
     #print(sp.td.div.div.a["href"])
 
