@@ -1,4 +1,7 @@
 #+title: Cash
+#+author: Barak-Nadav Diker
+#+SETUPFILE: https://fniessen.github.io/org-html-themes/org/theme-readtheorg.setup
+
 * Learn Pandas
 Here are some insights on data analysis via the tool pandas
 
@@ -507,3 +510,6 @@ print(soup.body.center.find_all("img")[0]["src"])
 ** Practical scrapper
 here is an example of extracting data from calcalist
 specificly , extracting "tel-aviv 35 stock index status"
+** QuantPy tutorials
+Here are some Tutorials from the website [[https://quantpy.com.au/tutorials/][web]] hopefully there will be practical stuff there
+*** Stochatic Calculus

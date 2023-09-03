@@ -3,196 +3,18 @@
 "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en">
 <head>
-<!-- 2023-08-14 Mon 16:22 -->
+<!-- 2023-08-29 Tue 09:51 -->
 <meta http-equiv="Content-Type" content="text/html;charset=utf-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1" />
 <title>Cash</title>
 <meta name="author" content="Barak-Nadav Diker" />
 <meta name="generator" content="Org Mode" />
-<style>
-  #content { max-width: 60em; margin: auto; }
-  .title  { text-align: center;
-             margin-bottom: .2em; }
-  .subtitle { text-align: center;
-              font-size: medium;
-              font-weight: bold;
-              margin-top:0; }
-  .todo   { font-family: monospace; color: red; }
-  .done   { font-family: monospace; color: green; }
-  .priority { font-family: monospace; color: orange; }
-  .tag    { background-color: #eee; font-family: monospace;
-            padding: 2px; font-size: 80%; font-weight: normal; }
-  .timestamp { color: #bebebe; }
-  .timestamp-kwd { color: #5f9ea0; }
-  .org-right  { margin-left: auto; margin-right: 0px;  text-align: right; }
-  .org-left   { margin-left: 0px;  margin-right: auto; text-align: left; }
-  .org-center { margin-left: auto; margin-right: auto; text-align: center; }
-  .underline { text-decoration: underline; }
-  #postamble p, #preamble p { font-size: 90%; margin: .2em; }
-  p.verse { margin-left: 3%; }
-  pre {
-    border: 1px solid #e6e6e6;
-    border-radius: 3px;
-    background-color: #f2f2f2;
-    padding: 8pt;
-    font-family: monospace;
-    overflow: auto;
-    margin: 1.2em;
-  }
-  pre.src {
-    position: relative;
-    overflow: auto;
-  }
-  pre.src:before {
-    display: none;
-    position: absolute;
-    top: -8px;
-    right: 12px;
-    padding: 3px;
-    color: #555;
-    background-color: #f2f2f299;
-  }
-  pre.src:hover:before { display: inline; margin-top: 14px;}
-  /* Languages per Org manual */
-  pre.src-asymptote:before { content: 'Asymptote'; }
-  pre.src-awk:before { content: 'Awk'; }
-  pre.src-authinfo::before { content: 'Authinfo'; }
-  pre.src-C:before { content: 'C'; }
-  /* pre.src-C++ doesn't work in CSS */
-  pre.src-clojure:before { content: 'Clojure'; }
-  pre.src-css:before { content: 'CSS'; }
-  pre.src-D:before { content: 'D'; }
-  pre.src-ditaa:before { content: 'ditaa'; }
-  pre.src-dot:before { content: 'Graphviz'; }
-  pre.src-calc:before { content: 'Emacs Calc'; }
-  pre.src-emacs-lisp:before { content: 'Emacs Lisp'; }
-  pre.src-fortran:before { content: 'Fortran'; }
-  pre.src-gnuplot:before { content: 'gnuplot'; }
-  pre.src-haskell:before { content: 'Haskell'; }
-  pre.src-hledger:before { content: 'hledger'; }
-  pre.src-java:before { content: 'Java'; }
-  pre.src-js:before { content: 'Javascript'; }
-  pre.src-latex:before { content: 'LaTeX'; }
-  pre.src-ledger:before { content: 'Ledger'; }
-  pre.src-lisp:before { content: 'Lisp'; }
-  pre.src-lilypond:before { content: 'Lilypond'; }
-  pre.src-lua:before { content: 'Lua'; }
-  pre.src-matlab:before { content: 'MATLAB'; }
-  pre.src-mscgen:before { content: 'Mscgen'; }
-  pre.src-ocaml:before { content: 'Objective Caml'; }
-  pre.src-octave:before { content: 'Octave'; }
-  pre.src-org:before { content: 'Org mode'; }
-  pre.src-oz:before { content: 'OZ'; }
-  pre.src-plantuml:before { content: 'Plantuml'; }
-  pre.src-processing:before { content: 'Processing.js'; }
-  pre.src-python:before { content: 'Python'; }
-  pre.src-R:before { content: 'R'; }
-  pre.src-ruby:before { content: 'Ruby'; }
-  pre.src-sass:before { content: 'Sass'; }
-  pre.src-scheme:before { content: 'Scheme'; }
-  pre.src-screen:before { content: 'Gnu Screen'; }
-  pre.src-sed:before { content: 'Sed'; }
-  pre.src-sh:before { content: 'shell'; }
-  pre.src-sql:before { content: 'SQL'; }
-  pre.src-sqlite:before { content: 'SQLite'; }
-  /* additional languages in org.el's org-babel-load-languages alist */
-  pre.src-forth:before { content: 'Forth'; }
-  pre.src-io:before { content: 'IO'; }
-  pre.src-J:before { content: 'J'; }
-  pre.src-makefile:before { content: 'Makefile'; }
-  pre.src-maxima:before { content: 'Maxima'; }
-  pre.src-perl:before { content: 'Perl'; }
-  pre.src-picolisp:before { content: 'Pico Lisp'; }
-  pre.src-scala:before { content: 'Scala'; }
-  pre.src-shell:before { content: 'Shell Script'; }
-  pre.src-ebnf2ps:before { content: 'ebfn2ps'; }
-  /* additional language identifiers per "defun org-babel-execute"
-       in ob-*.el */
-  pre.src-cpp:before  { content: 'C++'; }
-  pre.src-abc:before  { content: 'ABC'; }
-  pre.src-coq:before  { content: 'Coq'; }
-  pre.src-groovy:before  { content: 'Groovy'; }
-  /* additional language identifiers from org-babel-shell-names in
-     ob-shell.el: ob-shell is the only babel language using a lambda to put
-     the execution function name together. */
-  pre.src-bash:before  { content: 'bash'; }
-  pre.src-csh:before  { content: 'csh'; }
-  pre.src-ash:before  { content: 'ash'; }
-  pre.src-dash:before  { content: 'dash'; }
-  pre.src-ksh:before  { content: 'ksh'; }
-  pre.src-mksh:before  { content: 'mksh'; }
-  pre.src-posh:before  { content: 'posh'; }
-  /* Additional Emacs modes also supported by the LaTeX listings package */
-  pre.src-ada:before { content: 'Ada'; }
-  pre.src-asm:before { content: 'Assembler'; }
-  pre.src-caml:before { content: 'Caml'; }
-  pre.src-delphi:before { content: 'Delphi'; }
-  pre.src-html:before { content: 'HTML'; }
-  pre.src-idl:before { content: 'IDL'; }
-  pre.src-mercury:before { content: 'Mercury'; }
-  pre.src-metapost:before { content: 'MetaPost'; }
-  pre.src-modula-2:before { content: 'Modula-2'; }
-  pre.src-pascal:before { content: 'Pascal'; }
-  pre.src-ps:before { content: 'PostScript'; }
-  pre.src-prolog:before { content: 'Prolog'; }
-  pre.src-simula:before { content: 'Simula'; }
-  pre.src-tcl:before { content: 'tcl'; }
-  pre.src-tex:before { content: 'TeX'; }
-  pre.src-plain-tex:before { content: 'Plain TeX'; }
-  pre.src-verilog:before { content: 'Verilog'; }
-  pre.src-vhdl:before { content: 'VHDL'; }
-  pre.src-xml:before { content: 'XML'; }
-  pre.src-nxml:before { content: 'XML'; }
-  /* add a generic configuration mode; LaTeX export needs an additional
-     (add-to-list 'org-latex-listings-langs '(conf " ")) in .emacs */
-  pre.src-conf:before { content: 'Configuration File'; }
-
-  table { border-collapse:collapse; }
-  caption.t-above { caption-side: top; }
-  caption.t-bottom { caption-side: bottom; }
-  td, th { vertical-align:top;  }
-  th.org-right  { text-align: center;  }
-  th.org-left   { text-align: center;   }
-  th.org-center { text-align: center; }
-  td.org-right  { text-align: right;  }
-  td.org-left   { text-align: left;   }
-  td.org-center { text-align: center; }
-  dt { font-weight: bold; }
-  .footpara { display: inline; }
-  .footdef  { margin-bottom: 1em; }
-  .figure { padding: 1em; }
-  .figure p { text-align: center; }
-  .equation-container {
-    display: table;
-    text-align: center;
-    width: 100%;
-  }
-  .equation {
-    vertical-align: middle;
-  }
-  .equation-label {
-    display: table-cell;
-    text-align: right;
-    vertical-align: middle;
-  }
-  .inlinetask {
-    padding: 10px;
-    border: 2px solid gray;
-    margin: 10px;
-    background: #ffffcc;
-  }
-  #org-div-home-and-up
-   { text-align: right; font-size: 70%; white-space: nowrap; }
-  textarea { overflow-x: auto; }
-  .linenr { font-size: smaller }
-  .code-highlighted { background-color: #ffff00; }
-  .org-info-js_info-navigation { border-style: none; }
-  #org-info-js_console-label
-    { font-size: 10px; font-weight: bold; white-space: nowrap; }
-  .org-info-js_search-highlight
-    { background-color: #ffff00; color: #000000; font-weight: bold; }
-  .org-svg { }
-</style>
+<link rel="stylesheet" type="text/css" href="https://fniessen.github.io/org-html-themes/src/readtheorg_theme/css/htmlize.css"/>
+<link rel="stylesheet" type="text/css" href="https://fniessen.github.io/org-html-themes/src/readtheorg_theme/css/readtheorg.css"/>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.3/jquery.min.js"></script>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.4/js/bootstrap.min.js"></script>
+<script type="text/javascript" src="https://fniessen.github.io/org-html-themes/src/lib/js/jquery.stickytableheaders.min.js"></script>
+<script type="text/javascript" src="https://fniessen.github.io/org-html-themes/src/readtheorg_theme/js/readtheorg.js"></script>
 </head>
 <body>
 <div id="content" class="content">
@@ -201,32 +23,42 @@
 <h2>Table of Contents</h2>
 <div id="text-table-of-contents" role="doc-toc">
 <ul>
-<li><a href="#org5ef27a9">1. Learn Pandas</a>
+<li><a href="#orgdff47b1">1. Learn Pandas</a>
 <ul>
-<li><a href="#org2724b78">1.1. How to access a column</a></li>
-<li><a href="#orgf2cc364">1.2. Generate dates</a></li>
-<li><a href="#org2153375">1.3. How to generate a plot</a></li>
-<li><a href="#orgeb33b92">1.4. subplots</a></li>
-<li><a href="#orgc103671">1.5. Series</a></li>
-<li><a href="#org360adb5">1.6. DataFrames</a>
+<li><a href="#orgefd91ac">1.1. How to access a column</a></li>
+<li><a href="#orgb39f09f">1.2. Generate dates</a></li>
+<li><a href="#org79f4bb4">1.3. How to generate a plot</a></li>
+<li><a href="#org12c99d7">1.4. subplots</a></li>
+<li><a href="#org7ce3830">1.5. Series</a></li>
+<li><a href="#org2aef704">1.6. DataFrames</a>
 <ul>
-<li><a href="#org40a2f44">1.6.1. More ideas</a></li>
-<li><a href="#org607d01c">1.6.2. Another sample</a></li>
+<li><a href="#orgbe3fdef">1.6.1. More ideas</a></li>
+<li><a href="#org86a99d2">1.6.2. Another sample</a></li>
 </ul>
 </li>
 </ul>
 </li>
-<li><a href="#orgc287eba">2. Some Practical example</a>
+<li><a href="#org325e323">2. Some Practical example</a>
 <ul>
-<li><a href="#org03fdd8c">2.1. first process (Calculate F column)</a></li>
-<li><a href="#org0dc43bb">2.2. Second process (Calculate G)</a></li>
+<li><a href="#org5f3910d">2.1. first process (Calculate F column)</a></li>
+<li><a href="#org58dd2fa">2.2. Second process (Calculate G)</a></li>
+<li><a href="#org089d8df">2.3. Filtering in pandas</a></li>
+</ul>
+</li>
+<li><a href="#org684ba61">3. Scrapper Learn</a>
+<ul>
+<li><a href="#org9549066">3.1. Import HTML data</a></li>
+<li><a href="#orgb40f171">3.2. BeautifulSoup</a></li>
+<li><a href="#orgb77200b">3.3. Practical scrapper</a></li>
+<li><a href="#orgc8eccbe">3.4. QuantPy tutorials</a></li>
 </ul>
 </li>
 </ul>
 </div>
 </div>
-<div id="outline-container-org5ef27a9" class="outline-2">
-<h2 id="org5ef27a9"><span class="section-number-2">1.</span> Learn Pandas</h2>
+
+<div id="outline-container-orgdff47b1" class="outline-2">
+<h2 id="orgdff47b1"><span class="section-number-2">1.</span> Learn Pandas</h2>
 <div class="outline-text-2" id="text-1">
 <p>
 Here are some insights on data analysis via the tool pandas
@@ -243,8 +75,8 @@ Here is an example on how to open the data
 </pre>
 </div>
 </div>
-<div id="outline-container-org2724b78" class="outline-3">
-<h3 id="org2724b78"><span class="section-number-3">1.1.</span> How to access a column</h3>
+<div id="outline-container-orgefd91ac" class="outline-3">
+<h3 id="orgefd91ac"><span class="section-number-3">1.1.</span> How to access a column</h3>
 <div class="outline-text-3" id="text-1-1">
 <p>
 Here is how to access a column in python
@@ -255,8 +87,8 @@ Here is how to access a column in python
 </div>
 </div>
 </div>
-<div id="outline-container-orgf2cc364" class="outline-3">
-<h3 id="orgf2cc364"><span class="section-number-3">1.2.</span> Generate dates</h3>
+<div id="outline-container-orgb39f09f" class="outline-3">
+<h3 id="orgb39f09f"><span class="section-number-3">1.2.</span> Generate dates</h3>
 <div class="outline-text-3" id="text-1-2">
 <p>
 Here is how to generate sequence of dates
@@ -267,8 +99,8 @@ Here is how to generate sequence of dates
 </div>
 </div>
 </div>
-<div id="outline-container-org2153375" class="outline-3">
-<h3 id="org2153375"><span class="section-number-3">1.3.</span> How to generate a plot</h3>
+<div id="outline-container-org79f4bb4" class="outline-3">
+<h3 id="org79f4bb4"><span class="section-number-3">1.3.</span> How to generate a plot</h3>
 <div class="outline-text-3" id="text-1-3">
 <p>
 Here are some snippet that can help me in the future
@@ -326,8 +158,8 @@ plt.show()
 </div>
 </div>
 </div>
-<div id="outline-container-orgeb33b92" class="outline-3">
-<h3 id="orgeb33b92"><span class="section-number-3">1.4.</span> subplots</h3>
+<div id="outline-container-org12c99d7" class="outline-3">
+<h3 id="org12c99d7"><span class="section-number-3">1.4.</span> subplots</h3>
 <div class="outline-text-3" id="text-1-4">
 <p>
 note the following code
@@ -346,8 +178,8 @@ plt.show()
 </div>
 </div>
 </div>
-<div id="outline-container-orgc103671" class="outline-3">
-<h3 id="orgc103671"><span class="section-number-3">1.5.</span> Series</h3>
+<div id="outline-container-org7ce3830" class="outline-3">
+<h3 id="org7ce3830"><span class="section-number-3">1.5.</span> Series</h3>
 <div class="outline-text-3" id="text-1-5">
 <p>
 In This tutorial I&rsquo;ll learn how to use the series
@@ -386,8 +218,8 @@ Some more examples on how to create a pandas Series data structure
 </div>
 </div>
 </div>
-<div id="outline-container-org360adb5" class="outline-3">
-<h3 id="org360adb5"><span class="section-number-3">1.6.</span> DataFrames</h3>
+<div id="outline-container-org2aef704" class="outline-3">
+<h3 id="org2aef704"><span class="section-number-3">1.6.</span> DataFrames</h3>
 <div class="outline-text-3" id="text-1-6">
 <p>
 Note that couple of Series data structures create create a single DataFrame
@@ -414,8 +246,8 @@ important to note
 Note: When using [], the result is a Pandas DataFrame.
 </p>
 </div>
-<div id="outline-container-org40a2f44" class="outline-4">
-<h4 id="org40a2f44"><span class="section-number-4">1.6.1.</span> More ideas</h4>
+<div id="outline-container-orgbe3fdef" class="outline-4">
+<h4 id="orgbe3fdef"><span class="section-number-4">1.6.1.</span> More ideas</h4>
 <div class="outline-text-4" id="text-1-6-1">
 <p>
 If you&rsquo;ll want to index stuff then you could use
@@ -437,8 +269,8 @@ If you&rsquo;ll want to index stuff then you could use
 </div>
 </div>
 </div>
-<div id="outline-container-org607d01c" class="outline-4">
-<h4 id="org607d01c"><span class="section-number-4">1.6.2.</span> Another sample</h4>
+<div id="outline-container-org86a99d2" class="outline-4">
+<h4 id="org86a99d2"><span class="section-number-4">1.6.2.</span> Another sample</h4>
 <div class="outline-text-4" id="text-1-6-2">
 <p>
 Here is another dataframe pandas data set
@@ -492,12 +324,12 @@ Here is another dataframe pandas data set
 </div>
 </div>
 </div>
-<div id="outline-container-orgc287eba" class="outline-2">
-<h2 id="orgc287eba"><span class="section-number-2">2.</span> Some Practical example</h2>
+<div id="outline-container-org325e323" class="outline-2">
+<h2 id="org325e323"><span class="section-number-2">2.</span> Some Practical example</h2>
 <div class="outline-text-2" id="text-2">
 </div>
-<div id="outline-container-org03fdd8c" class="outline-3">
-<h3 id="org03fdd8c"><span class="section-number-3">2.1.</span> first process (Calculate F column)</h3>
+<div id="outline-container-org5f3910d" class="outline-3">
+<h3 id="org5f3910d"><span class="section-number-3">2.1.</span> first process (Calculate F column)</h3>
 <div class="outline-text-3" id="text-2-1">
 <p>
 Here is a practical example where I search for the increment
@@ -528,8 +360,8 @@ Here is a practical example where I search for the increment
 </div>
 </div>
 </div>
-<div id="outline-container-org0dc43bb" class="outline-3">
-<h3 id="org0dc43bb"><span class="section-number-3">2.2.</span> Second process (Calculate G)</h3>
+<div id="outline-container-org58dd2fa" class="outline-3">
+<h3 id="org58dd2fa"><span class="section-number-3">2.2.</span> Second process (Calculate G)</h3>
 <div class="outline-text-3" id="text-2-2">
 <p>
 In order to use rank.avg in python from excel we&rsquo;ll use .rank() function
@@ -553,11 +385,150 @@ In order to use rank.avg in python from excel we&rsquo;ll use .rank() function
 </div>
 </div>
 </div>
+<div id="outline-container-org089d8df" class="outline-3">
+<h3 id="org089d8df"><span class="section-number-3">2.3.</span> Filtering in pandas</h3>
+<div class="outline-text-3" id="text-2-3">
+<p>
+Here is some snippets from
+<a href="https://pandas.pydata.org/docs/getting_started/intro_tutorials/03_subset_data.html">link</a>
+This website has great explanations
+note the following code
+</p>
+<div class="org-src-container">
+<pre class="src src-python"><span style="color: #9d0006;">import</span> pandas <span style="color: #9d0006;">as</span> pd
+<span style="color: #076678;">titanic</span> = pd.read_csv(<span style="color: #79740e;">"titanic.csv"</span>)
+<span style="color: #af3a03;">print</span>(titanic[[<span style="color: #79740e;">"PassengerId"</span> , <span style="color: #79740e;">"Pclass"</span>]])
+</pre>
+</div>
+
+<div class="org-src-container">
+<pre class="src src-python"><span style="color: #9d0006;">import</span> pandas <span style="color: #9d0006;">as</span> pd
+<span style="color: #076678;">titanic</span> = pd.read_csv(<span style="color: #79740e;">"titanic.csv"</span>)
+<span style="color: #076678;">above_35</span> = titanic[titanic[<span style="color: #79740e;">"Age"</span>] &gt; <span style="color: #8f3f71; font-weight: bold;">35</span>][[<span style="color: #79740e;">"PassengerId"</span>,<span style="color: #79740e;">"Pclass"</span>]]
+<span style="color: #af3a03;">print</span>(above_35)
+</pre>
+</div>
+
+<p>
+Another nontable example , is if you want to check certain condition on a column (Series)
+Them you should look at this example
+</p>
+
+<div class="org-src-container">
+<pre class="src src-python"><span style="color: #9d0006;">import</span> pandas <span style="color: #9d0006;">as</span> pd
+<span style="color: #076678;">titanic</span> = pd.read_csv(<span style="color: #79740e;">"titanic.csv"</span>)
+<span style="color: #076678;">series</span> = titanic[titanic[<span style="color: #79740e;">"Age"</span>] &gt; <span style="color: #8f3f71; font-weight: bold;">35</span>]
+<span style="color: #a89984;">#</span><span style="color: #a89984;">print(series.head())</span>
+<span style="color: #a89984;">#</span><span style="color: #a89984;">print("Barak")</span>
+<span style="color: #a89984;">#</span><span style="color: #a89984;">print(titanic["Age"] &gt; 35)</span>
+
+<span style="color: #076678;">class_23</span> = titanic[titanic[<span style="color: #79740e;">"Pclass"</span>].isin([<span style="color: #8f3f71; font-weight: bold;">2</span>, <span style="color: #8f3f71; font-weight: bold;">3</span>])].iloc[:,[<span style="color: #8f3f71; font-weight: bold;">0</span>,<span style="color: #8f3f71; font-weight: bold;">3</span>,<span style="color: #8f3f71; font-weight: bold;">4</span>,<span style="color: #8f3f71; font-weight: bold;">6</span>]]
+<span style="color: #a89984;">#</span><span style="color: #a89984;">print(class_23)</span>
+
+<span style="color: #076678;">another_example</span> = titanic[[<span style="color: #79740e;">"Age"</span>,<span style="color: #79740e;">"Pclass"</span>,<span style="color: #79740e;">"Fare"</span>,<span style="color: #79740e;">"Cabin"</span>]].loc[(titanic[<span style="color: #79740e;">"Age"</span>] &gt; <span style="color: #8f3f71; font-weight: bold;">40</span>) &amp; (titanic[<span style="color: #79740e;">"Fare"</span>] &gt; <span style="color: #8f3f71; font-weight: bold;">20</span>) , [<span style="color: #79740e;">"Pclass"</span>,<span style="color: #79740e;">"Fare"</span>]]
+<span style="color: #af3a03;">print</span>(another_example)
+
+<span style="color: #a89984;">#</span><span style="color: #a89984;">another_example2 = titanic["Age"]</span>
+<span style="color: #a89984;">#</span><span style="color: #a89984;">print(type(another_example2))</span>
+
+<span style="color: #076678;">adult_names</span> = titanic.loc[titanic[<span style="color: #79740e;">"Age"</span>] &gt; <span style="color: #8f3f71; font-weight: bold;">35</span>, <span style="color: #79740e;">"Name"</span>]
+<span style="color: #a89984;">#</span><span style="color: #a89984;">print(adult_names)</span>
+
+</pre>
+</div>
+</div>
+</div>
+</div>
+
+
+<div id="outline-container-org684ba61" class="outline-2">
+<h2 id="org684ba61"><span class="section-number-2">3.</span> Scrapper Learn</h2>
+<div class="outline-text-2" id="text-3">
+<p>
+In this section I&rsquo;ll learn how to create a scraper that uses python with library beautifulSoup4 and I&rsquo;ll Import the the from the website calcalist
+</p>
+</div>
+<div id="outline-container-org9549066" class="outline-3">
+<h3 id="org9549066"><span class="section-number-3">3.1.</span> Import HTML data</h3>
+<div class="outline-text-3" id="text-3-1">
+<p>
+Here is how to import data via python
+</p>
+<div class="org-src-container">
+<pre class="src src-python"><span style="color: #9d0006;">from</span> bs4 <span style="color: #9d0006;">import</span> BeautifulSoup
+<span style="color: #9d0006;">from</span> urllib.request <span style="color: #9d0006;">import</span> urlopen
+<span style="color: #076678;">url</span> = <span style="color: #79740e;">"http://olympus.realpython.org/profiles/dionysus"</span>
+<span style="color: #076678;">page</span> = urlopen(url)
+<span style="color: #076678;">html</span> = page.read().decode(<span style="color: #79740e;">"utf-8"</span>)
+<span style="color: #076678;">soup</span> = BeautifulSoup(html, <span style="color: #79740e;">"html.parser"</span>)
+<span style="color: #076678;">data</span> = soup.find_all(<span style="color: #79740e;">"h2"</span>)
+<span style="color: #af3a03;">print</span>(data[<span style="color: #8f3f71; font-weight: bold;">0</span>].string)
+</pre>
+</div>
+
+
+<p>
+Please note that we&rsquo;ll do the data processing on the &ldquo;data&rdquo; object from the code above
+</p>
+</div>
+</div>
+
+<div id="outline-container-orgb40f171" class="outline-3">
+<h3 id="orgb40f171"><span class="section-number-3">3.2.</span> BeautifulSoup</h3>
+<div class="outline-text-3" id="text-3-2">
+<p>
+Here are some code snipprt
+</p>
+<div class="org-src-container">
+<pre class="src src-python"><span style="color: #9d0006;">from</span> bs4 <span style="color: #9d0006;">import</span> BeautifulSoup
+<span style="color: #9d0006;">from</span> urllib.request <span style="color: #9d0006;">import</span> urlopen
+<span style="color: #076678;">url</span> = <span style="color: #79740e;">"http://olympus.realpython.org/profiles/dionysus"</span>
+<span style="color: #076678;">page</span> = urlopen(url)
+<span style="color: #076678;">html</span> = page.read().decode(<span style="color: #79740e;">"utf-8"</span>)
+<span style="color: #076678;">soup</span> = BeautifulSoup(html, <span style="color: #79740e;">"html.parser"</span>)
+<span style="color: #af3a03;">print</span>(soup.prettify())
+</pre>
+</div>
+
+<p>
+Another notable examples are the following one to get a specific element
+</p>
+
+<div class="org-src-container">
+<pre class="src src-python"><span style="color: #9d0006;">from</span> bs4 <span style="color: #9d0006;">import</span> BeautifulSoup
+<span style="color: #9d0006;">from</span> urllib.request <span style="color: #9d0006;">import</span> urlopen
+<span style="color: #076678;">url</span> = <span style="color: #79740e;">"http://olympus.realpython.org/profiles/dionysus"</span>
+<span style="color: #076678;">page</span> = urlopen(url)
+<span style="color: #076678;">html</span> = page.read().decode(<span style="color: #79740e;">"utf-8"</span>)
+<span style="color: #076678;">soup</span> = BeautifulSoup(html, <span style="color: #79740e;">"html.parser"</span>)
+<span style="color: #af3a03;">print</span>(soup.head.title)
+<span style="color: #af3a03;">print</span>(soup.body.center.find_all(<span style="color: #79740e;">"img"</span>)[<span style="color: #8f3f71; font-weight: bold;">0</span>][<span style="color: #79740e;">"src"</span>])
+</pre>
+</div>
+</div>
+</div>
+<div id="outline-container-orgb77200b" class="outline-3">
+<h3 id="orgb77200b"><span class="section-number-3">3.3.</span> Practical scrapper</h3>
+<div class="outline-text-3" id="text-3-3">
+<p>
+here is an example of extracting data from calcalist
+specificly , extracting &ldquo;tel-aviv 35 stock index status&rdquo;
+</p>
+</div>
+</div>
+<div id="outline-container-orgc8eccbe" class="outline-3">
+<h3 id="orgc8eccbe"><span class="section-number-3">3.4.</span> QuantPy tutorials</h3>
+<div class="outline-text-3" id="text-3-4">
+<p>
+Here are some Tutorials from the website <a href="https://quantpy.com.au/tutorials/">web</a> hopefully there will be practical stuff there
+</p>
+</div>
+</div>
 </div>
 </div>
 <div id="postamble" class="status">
 <p class="author">Author: Barak-Nadav Diker</p>
-<p class="date">Created: 2023-08-14 Mon 16:22</p>
+<p class="date">Created: 2023-08-29 Tue 09:51</p>
 </div>
 </body>
 </html>
