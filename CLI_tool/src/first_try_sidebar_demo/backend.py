@@ -1,9 +1,12 @@
+"""Initiate the demo page element for sidebar."""
+
 import dash_bootstrap_components as dbc
 import css
 from dash import html, dcc
 
 
 def get_content():
+    """Init Demo page element for sidebar."""
     content = html.Div(
         # content = dbc.Container(
         [
@@ -55,10 +58,8 @@ def get_content():
                     ),  # , width=6),
                 ]
             ),
-            # dbc.Row([dbc.Col([dcc.Graph(figure={}, id="my-first-graph-final3")])]),
+            dbc.Row([dbc.Col([dcc.Graph(figure={}, id="my-first-graph-final3")])]),
         ],
-        # id="page-content",
         style=css.CONTENT_STYLE,
-        # fluid=True,
     )
     return content
