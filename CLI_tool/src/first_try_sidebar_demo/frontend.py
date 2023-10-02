@@ -41,18 +41,18 @@ SIDEBAR_STYLE = {
 # the styles for the main content position it to the right of the sidebar and
 # add some padding.
 sidebar_list_data = [
-    dbc.NavLink("Home", href="/", active="exact"),
-    dbc.NavLink("Page 1", href="/LUMI", active="exact"),
-    dbc.NavLink("Page 2", href="/page-2", active="exact"),
+    dbc.NavLink("Demo", href="/", active="exact"),
+    dbc.NavLink("Tick LUMI.TA", href="/LUMI", active="exact"),
+    dbc.NavLink("Tick CEL.TA", href="/CEL", active="exact"),
     dbc.NavLink("Page 3", href="/LEUMI", active="exact"),
 ]
 
 
 sidebar = html.Div(
     [
-        html.H2("Sidebar", className="display-4"),
+        html.H2("Tickers", className="display-4"),
         html.Hr(),
-        html.P("A simple sidebar layout with navigation links", className="lead"),
+        html.P("Please select your Ticker from the sidebar layout", className="lead"),
         dbc.Nav(
             sidebar_list_data,
             vertical=True,
@@ -79,10 +79,12 @@ def render_page_content(pathname):
         # return html.P("This is the content of the home page!")
         return backend.get_content()
     elif pathname == "/LUMI":
+        print(pathname[1:])
         return display_page.get_content_html_ticker(pathname[1:])  # "LUMI"
         # html.P("This is the content of page 1. Yay!")
-    elif pathname == "/page-2":
-        return html.P("Oh cool, this is page 2!" + pathname[1:])
+    elif pathname == "/CEL":
+        print(pathname[1:])
+        return display_page.get_content_html_ticker(pathname[1:])  # "LUMI"
     elif pathname == "/LEUMI":
         return html.P("Oh cool, this is page 3!" + pathname[1:])
         # return display_page.get_content_html_ticker_custom(pathname[1:])

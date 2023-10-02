@@ -23,19 +23,26 @@ def get_content_html_ticker(name_ticker):
     fig_with_regression = research_algorithm_near_area.get_fig_with_regression_algo(
         ticker_data, name_ticker
     )
+    #################################################################
     (
         fig_hist_global_minimum,
         fig_plot_global_minimum,
-    ) = research_algorithm_near_area.get_fig_hist_from_regression(
+    ) = research_algorithm_near_area.get_fig_hist_from_regression_global(
         ticker_data, name_ticker
     )
-
+    #################################################################
+    (
+        fig_hist_local_minimum,
+        fig_plot_local_minimum,
+    ) = research_algorithm_near_area.get_fig_hist_from_regression_local(
+        ticker_data, name_ticker
+    )
+    #################################################################
     content = html.Div(
         [
             dbc.Row(
                 [
                     html.Div(
-                        # "My First App with Data, Graph, and Controls"
                         "The Name of the Ticker is:" + name_ticker,
                         className="text-primary text-center fs-3",
                     )
@@ -58,7 +65,13 @@ def get_content_html_ticker(name_ticker):
                     dbc.Col([dcc.Graph(figure=fig_hist_global_minimum)]),
                     dbc.Col([dcc.Graph(figure=fig_plot_global_minimum)]),
                 ]
-            )
+            ),
+            dbc.Row(
+                [
+                    dbc.Col([dcc.Graph(figure=fig_hist_local_minimum)]),
+                    dbc.Col([dcc.Graph(figure=fig_plot_local_minimum)]),
+                ]
+            ),
             # dbc.Row(
             #     [
             #         dbc.Col(

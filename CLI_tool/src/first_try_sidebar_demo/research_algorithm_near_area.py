@@ -91,16 +91,41 @@ def get_fig_with_regression_algo(ticker_series, name_ticker):
     # fig, axes = plt.subplots(nrows=2, ncols=3, figsize=(14, 9))
     a, b, df = regression_from_date(ticker_series, pd.to_datetime(err.idxmin()))
     df["Dates"] = df.index
+
+    pd_err = pd.DataFrame(err, columns=["err"])
+    pd_err["min"] = pd_err.err[
+        (pd_err.err.shift(1) > pd_err.err) & (pd_err.err.shift(-1) > pd_err.err)
+    ]
+    pd_err = pd_err.dropna()  # drops the NaN elements
+    pd_err["min"] = pd_err["min"].apply(np.sqrt)
+    # plt.scatter(pd_err.index, pd_err['min'], c='r')
+
+    df1 = change_alignment(ticker_series["High"], a, b)
+
+    if len(pd_err) > 0:
+        another_date = pd.to_datetime(pd_err.index[0])
+        print("Local Regression Date: ", another_date)
+        a2, b2, another_reg = regression_from_date(ticker_series, another_date)
+        # another_reg["pred y"].plot(ax=axes[0][0])
+        df["pred z"] = another_reg["pred y"]
+        return px.line(
+            df,
+            x="Dates",
+            y=["pred y", "High", "pred z"],
+            hover_data={"Dates": "|%B %d, %Y"},
+            title="Ticker High " + name_ticker,
+        )
+
     return px.line(
         df,
         x="Dates",
         y=["pred y", "High"],
         hover_data={"Dates": "|%B %d, %Y"},
-        title="custom tick labels",
+        title="Ticker High " + name_ticker,
     )
 
 
-def get_fig_hist_from_regression(ticker_series, name_ticker):
+def get_fig_hist_from_regression_global(ticker_series, name_ticker):
     df_nelder = smooth_plot(ticker_series, "High")
     df_nelder = pd.DataFrame(df_nelder)
     err = finding_last_big_change_nelder_mead(df_nelder)
@@ -120,6 +145,35 @@ def get_fig_hist_from_regression(ticker_series, name_ticker):
     fig_hist = px.histogram(df1[err.idxmin() :], title="Global Minimum")
     fig_plot = px.line(df1[err.idxmin() :], title="Global Minimum")
     return fig_hist, fig_plot
+
+
+def get_fig_hist_from_regression_local(ticker_series, name_ticker):
+    df_nelder = smooth_plot(ticker_series, "High")
+    df_nelder = pd.DataFrame(df_nelder)
+    err = finding_last_big_change_nelder_mead(df_nelder)
+    a, b, df = regression_from_date(ticker_series, pd.to_datetime(err.idxmin()))
+    # Plot results
+    pd_err = pd.DataFrame(err, columns=["err"])
+    pd_err["min"] = pd_err.err[
+        (pd_err.err.shift(1) > pd_err.err) & (pd_err.err.shift(-1) > pd_err.err)
+    ]
+    pd_err = pd_err.dropna()  # drops the NaN elements
+    pd_err["min"] = pd_err["min"].apply(np.sqrt)
+    # plt.scatter(pd_err.index, pd_err['min'], c='r')
+
+    df1 = change_alignment(ticker_series["High"], a, b)
+
+    if len(pd_err) > 0:
+        another_date = pd.to_datetime(pd_err.index[0])
+        print("Local Regression Date: ", another_date)
+        a2, b2, another_reg = regression_from_date(ticker_series, another_date)
+        # another_reg["pred y"].plot(ax=axes[0][0])
+
+        df2 = change_alignment(ticker_series["High"], a2, b2)
+        fig_hist = px.histogram(df2[pd_err.index[0] :], title="Last Local Minimum")
+        fig_plot = px.line(df2[pd_err.index[0] :], title="Last Local Minimum")
+        return fig_hist, fig_plot
+    return {}, {}
 
 
 def auto_calculation(ticker_series, name_ticker):
