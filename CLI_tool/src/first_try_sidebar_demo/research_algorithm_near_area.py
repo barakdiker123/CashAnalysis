@@ -144,7 +144,20 @@ def get_fig_hist_from_regression_global(ticker_series, name_ticker):
 
     fig_hist = px.histogram(df1[err.idxmin() :], title="Global Minimum")
     fig_plot = px.line(df1[err.idxmin() :], title="Global Minimum")
-    return fig_hist, fig_plot
+    return (
+        fig_hist,
+        fig_plot,
+        df1[err.idxmin() :][df1.columns[-1]].std(),  # "Global Regression std:"
+        df1[err.idxmin() :][df1.columns[-1]].skew(),  # "Global Regression skew:"
+        df1[df1.columns[-1]][err.idxmin() :].iloc[
+            -1
+        ],  #  "According to Local Regression you are at "
+        df1[df1.columns[-1]][err.idxmin() :].iloc[-1]
+        / df1[err.idxmin() :][
+            df1.columns[-1]
+        ].std(),  # "Your distance is in std units "
+        pd.to_datetime(err.idxmin()),  # Regression from Date
+    )
 
 
 def get_fig_hist_from_regression_local(ticker_series, name_ticker):
@@ -172,8 +185,21 @@ def get_fig_hist_from_regression_local(ticker_series, name_ticker):
         df2 = change_alignment(ticker_series["High"], a2, b2)
         fig_hist = px.histogram(df2[pd_err.index[0] :], title="Last Local Minimum")
         fig_plot = px.line(df2[pd_err.index[0] :], title="Last Local Minimum")
-        return fig_hist, fig_plot
-    return {}, {}
+        return (
+            fig_hist,
+            fig_plot,
+            df2[pd_err.index[0] :][df2.columns[-1]].std(),  # "Local Regression std:"
+            df2[pd_err.index[0] :][df2.columns[-1]].skew(),  # "Local Regression skew:"
+            df2[df2.columns[-1]][pd_err.index[0] :].iloc[
+                -1
+            ],  # "According to Local Regression you are at "
+            df2[df2.columns[-1]][pd_err.index[0] :].iloc[-1]
+            / df2[pd_err.index[0] :][
+                df2.columns[-1]
+            ].std(),  # "Your distance is in std units "
+            pd_err.index[0],  # Local Regression from :
+        )
+    return {}, {}, None, None, None, None, None
 
 
 def auto_calculation(ticker_series, name_ticker):

@@ -7,11 +7,205 @@ import css
 import plotly.express as px
 import research_algorithm_near_area
 
+# import database
+import database_ticker
 
+# database_ticker = {}
+
+
+class DataAnalysisTicker:
+    """Save the data and calculation of each Ticker."""
+
+    def __init__(self, name_ticker):
+        """Calculate and create display object of each element"""
+        self.name_ticker = name_ticker
+        current_ticker_name = self.name_ticker
+        self.ticker_data = yf.download(current_ticker_name, period="15y", interval="1d")
+        self.ticker_data["Dates"] = self.ticker_data.index
+
+        self.fig = px.line(
+            self.ticker_data,
+            x="Dates",
+            y=["High", "Low"],
+            hover_data={"Dates": "|%B %d, %Y"},
+            title="custom tick labels",
+        )
+
+        self.fig_with_regression = (
+            research_algorithm_near_area.get_fig_with_regression_algo(
+                self.ticker_data, self.name_ticker
+            )
+        )
+        #################################################################
+        (
+            self.fig_hist_global_minimum,
+            self.fig_plot_global_minimum,
+            self.global_regression_std,
+            self.global_regression_skew,
+            self.global_distance_from_regression_to_current_day,
+            self.global_distance_from_regression_to_current_day_in_std,
+            self.global_regression_date,
+        ) = research_algorithm_near_area.get_fig_hist_from_regression_global(
+            self.ticker_data, self.name_ticker
+        )
+        #################################################################
+        (
+            self.fig_hist_local_minimum,
+            self.fig_plot_local_minimum,
+            self.local_regression_std,
+            self.local_regression_skew,
+            self.local_distance_from_regression_to_current_day,
+            self.local_distance_from_regression_to_current_day_in_std,
+            self.local_regression_date,
+        ) = research_algorithm_near_area.get_fig_hist_from_regression_local(
+            self.ticker_data, self.name_ticker
+        )
+        #################################################################
+        #################################################################
+        #################################################################
+
+
+def get_content_from_DataAnalysisTicker(data: DataAnalysisTicker):
+    content = html.Div(
+        [
+            dbc.Row(
+                [
+                    html.Div(
+                        "The Name of the Ticker is:" + data.name_ticker,
+                        className="text-primary text-center fs-3",
+                    )
+                ]
+            ),
+            dbc.Row(
+                [
+                    dbc.Col(
+                        [
+                            dcc.Graph(
+                                figure=data.fig,
+                            )
+                        ]
+                    )
+                ]
+            ),
+            dbc.Row([dbc.Col([dcc.Graph(figure=data.fig_with_regression)])]),
+            dbc.Row(
+                [
+                    dbc.Col([dcc.Graph(figure=data.fig_hist_global_minimum)]),
+                    dbc.Col([dcc.Graph(figure=data.fig_plot_global_minimum)]),
+                ]
+            ),
+            dbc.Row(
+                [
+                    dbc.Col(
+                        [
+                            html.Div(
+                                "Global Regression std:"
+                                + str(data.global_regression_std),
+                                className="text-center",
+                            ),
+                            html.Div(
+                                "Global Regression skew:"
+                                + str(data.global_regression_skew),
+                                className="text-center",
+                            ),
+                            html.Div(
+                                "According to Global regression your distance is:"
+                                + str(
+                                    data.global_distance_from_regression_to_current_day
+                                ),
+                                className="text-center",
+                            ),
+                            html.Div(
+                                "According to Global regression in std your distance is:"
+                                + str(
+                                    data.global_distance_from_regression_to_current_day_in_std
+                                ),
+                                className="text-center",
+                            ),
+                            html.Div(
+                                "Regression from Date: "
+                                + str(data.global_regression_date),
+                                className="text-center",
+                            ),
+                        ]
+                    )
+                ]
+            ),
+            dbc.Row(
+                [
+                    dbc.Col([dcc.Graph(figure=data.fig_hist_local_minimum)]),
+                    dbc.Col([dcc.Graph(figure=data.fig_plot_local_minimum)]),
+                ]
+            ),
+            dbc.Row(
+                [
+                    dbc.Col(
+                        [
+                            html.Div(
+                                "local Regression std:"
+                                + str(data.local_regression_std),
+                                className="text-center",
+                            ),
+                            html.Div(
+                                "local Regression skew:"
+                                + str(data.local_regression_skew),
+                                className="text-center",
+                            ),
+                            html.Div(
+                                "According to local regression your distance is:"
+                                + str(
+                                    data.local_distance_from_regression_to_current_day
+                                ),
+                                className="text-center",
+                            ),
+                            html.Div(
+                                "According to local regression in std your distance is:"
+                                + str(
+                                    data.local_distance_from_regression_to_current_day_in_std
+                                ),
+                                className="text-center",
+                            ),
+                            html.Div(
+                                "Regression from Date: "
+                                + str(data.local_regression_date),
+                                className="text-center",
+                            ),
+                        ]
+                    )
+                ]
+            ),
+        ],
+        style=css.CONTENT_STYLE,
+    )
+    return content
+
+
+def process_data():
+    tickers = database_ticker.tickers
+
+    tickers_DataAnalysisTicker = map(
+        lambda ticker_name: DataAnalysisTicker(ticker_name), tickers
+    )
+    tickers_content = map(
+        lambda obj_DataAnalysisTicker: get_content_from_DataAnalysisTicker(
+            obj_DataAnalysisTicker
+        ),
+        tickers_DataAnalysisTicker,
+    )
+    # Given a name of ticker return the required displayed object
+    dict_display_data = dict(map(lambda i, j: (i, j), tickers, tickers_content))
+    return dict_display_data
+
+
+# Deprecated !
 def get_content_html_ticker(name_ticker):
     """Create a Page Element one side bar."""
     current_ticker_name = name_ticker + ".TA"
-    ticker_data = yf.download(current_ticker_name, period="15y", interval="1d")
+    if current_ticker_name in database_ticker.database_ticker:
+        ticker_data = database_ticker.database_ticker[current_ticker_name]
+    else:
+        ticker_data = yf.download(current_ticker_name, period="15y", interval="1d")
+        database_ticker.database_ticker[current_ticker_name] = ticker_data
     ticker_data["Dates"] = ticker_data.index
     fig = px.line(
         ticker_data,

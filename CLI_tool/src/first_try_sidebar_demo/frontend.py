@@ -15,6 +15,7 @@ import dash_bootstrap_components as dbc
 from dash import Dash, html, dash_table, dcc, callback, Output, Input
 import css
 
+import database_ticker
 import plotly.express as px
 import yfinance as yf
 import backend
@@ -40,12 +41,21 @@ SIDEBAR_STYLE = {
 
 # the styles for the main content position it to the right of the sidebar and
 # add some padding.
-sidebar_list_data = [
-    dbc.NavLink("Demo", href="/", active="exact"),
-    dbc.NavLink("Tick LUMI.TA", href="/LUMI", active="exact"),
-    dbc.NavLink("Tick CEL.TA", href="/CEL", active="exact"),
-    dbc.NavLink("Page 3", href="/LEUMI", active="exact"),
-]
+# sidebar_list_data = [
+#    dbc.NavLink("Demo", href="/", active="exact"),
+#    dbc.NavLink("Tick LUMI.TA", href="/LUMI", active="exact"),
+#    dbc.NavLink("Tick CEL.TA", href="/CEL", active="exact"),
+#    dbc.NavLink("Page 3", href="/LEUMI", active="exact"),
+# ]
+
+dict_display_data = display_page.process_data()
+process_ticker_name = map(
+    lambda ticker_name: dbc.NavLink(
+        "Stock " + ticker_name, href="/" + ticker_name, active="exact"
+    ),
+    database_ticker.tickers,
+)
+sidebar_list_data = list(process_ticker_name)
 
 
 sidebar = html.Div(
@@ -88,6 +98,9 @@ def render_page_content(pathname):
     elif pathname == "/LEUMI":
         return html.P("Oh cool, this is page 3!" + pathname[1:])
         # return display_page.get_content_html_ticker_custom(pathname[1:])
+    elif pathname[1:] in database_ticker.tickers:
+        return dict_display_data[pathname[1:]]
+
     # If the user tries to reach a different page, return a 404 message
     return html.Div(
         [
@@ -100,4 +113,4 @@ def render_page_content(pathname):
 
 
 if __name__ == "__main__":
-    app.run_server(port=8888)
+    app.run_server(port=8050)
