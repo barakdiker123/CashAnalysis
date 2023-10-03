@@ -1,4 +1,13 @@
 
+# To Run the application 
+```console
+foo@bar:~$ cd CLI_tool/src/first_try_sidebar_demo/
+foo@bar:~$ python3 frontend.py
+```
+You should wait for a couple of moment for the data to get dowloaded 
+and you should wait for the calculation 
+after that just use in the browser 
+127.0.0.1:8050 (Or whatever the program says )
 
 
 # Cash Calculator 
