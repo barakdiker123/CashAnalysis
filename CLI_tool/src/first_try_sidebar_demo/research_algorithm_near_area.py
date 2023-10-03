@@ -202,6 +202,100 @@ def get_fig_hist_from_regression_local(ticker_series, name_ticker):
     return {}, {}, None, None, None, None, None
 
 
+def auto_calculation_production(ticker_series, name_ticker):
+    df_nelder = smooth_plot(ticker_series, "High")
+    df_nelder = pd.DataFrame(df_nelder)
+    err = finding_last_big_change_nelder_mead(df_nelder)
+    a, b, df = regression_from_date(ticker_series, pd.to_datetime(err.idxmin()))
+    df["Dates"] = df.index
+
+    # Plot results
+    pd_err = pd.DataFrame(err, columns=["err"])
+    pd_err["min"] = pd_err.err[
+        (pd_err.err.shift(1) > pd_err.err) & (pd_err.err.shift(-1) > pd_err.err)
+    ]
+    pd_err = pd_err.dropna()  # drops the NaN elements
+    pd_err["min"] = pd_err["min"].apply(np.sqrt)
+    # plt.scatter(pd_err.index, pd_err['min'], c='r')
+
+    df1 = change_alignment(ticker_series["High"], a, b)
+    fig_hist_global = px.histogram(df1[err.idxmin() :], title="Global Minimum")
+    fig_plot_global = px.line(df1[err.idxmin() :], title="Global Minimum")
+
+    if len(pd_err) > 0:
+        another_date = pd.to_datetime(pd_err.index[0])
+        print("Local Regression Date: ", another_date)
+        a2, b2, another_reg = regression_from_date(ticker_series, another_date)
+
+        df2 = change_alignment(ticker_series["High"], a2, b2)
+        fig_hist = px.histogram(df2[pd_err.index[0] :], title="Last Local Minimum")
+        fig_plot = px.line(df2[pd_err.index[0] :], title="Last Local Minimum")
+
+        df2 = change_alignment(ticker_series["High"], a2, b2)
+        df["pred z"] = another_reg["pred y"]
+        return (
+            px.line(
+                df,
+                x="Dates",
+                y=["pred y", "High", "pred z"],
+                hover_data={"Dates": "|%B %d, %Y"},
+                title="Ticker High " + name_ticker,
+            ),
+            fig_hist_global,
+            fig_plot_global,
+            df1[err.idxmin() :][df1.columns[-1]].std(),  # "Global Regression std:"
+            df1[err.idxmin() :][df1.columns[-1]].skew(),  # "Global Regression skew:"
+            df1[df1.columns[-1]][err.idxmin() :].iloc[
+                -1
+            ],  #  "According to Local Regression you are at "
+            df1[df1.columns[-1]][err.idxmin() :].iloc[-1]
+            / df1[err.idxmin() :][
+                df1.columns[-1]
+            ].std(),  # "Your distance is in std units "
+            pd.to_datetime(err.idxmin()),  # Regression from Date
+            fig_hist,
+            fig_plot,
+            df2[pd_err.index[0] :][df2.columns[-1]].std(),  # "Local Regression std:"
+            df2[pd_err.index[0] :][df2.columns[-1]].skew(),  # "Local Regression skew:"
+            df2[df2.columns[-1]][pd_err.index[0] :].iloc[
+                -1
+            ],  # "According to Local Regression you are at "
+            df2[df2.columns[-1]][pd_err.index[0] :].iloc[-1]
+            / df2[pd_err.index[0] :][
+                df2.columns[-1]
+            ].std(),  # "Your distance is in std units "
+            pd_err.index[0],  # Local Regression from :
+        )
+    return (
+        px.line(
+            df,
+            x="Dates",
+            y=["pred y", "High"],
+            hover_data={"Dates": "|%B %d, %Y"},
+            title="Ticker High " + name_ticker,
+        ),
+        fig_hist_global,
+        fig_plot_global,
+        df1[err.idxmin() :][df1.columns[-1]].std(),  # "Global Regression std:"
+        df1[err.idxmin() :][df1.columns[-1]].skew(),  # "Global Regression skew:"
+        df1[df1.columns[-1]][err.idxmin() :].iloc[
+            -1
+        ],  #  "According to Local Regression you are at "
+        df1[df1.columns[-1]][err.idxmin() :].iloc[-1]
+        / df1[err.idxmin() :][
+            df1.columns[-1]
+        ].std(),  # "Your distance is in std units "
+        pd.to_datetime(err.idxmin()),  # Regression from Date
+        {},
+        {},
+        None,
+        None,
+        None,
+        None,
+        None,
+    )
+
+
 def auto_calculation(ticker_series, name_ticker):
     df_nelder = smooth_plot(ticker_series, "High")
     df_nelder = pd.DataFrame(df_nelder)

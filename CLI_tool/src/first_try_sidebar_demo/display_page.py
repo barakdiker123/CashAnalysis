@@ -31,13 +31,43 @@ class DataAnalysisTicker:
             title="custom tick labels",
         )
 
-        self.fig_with_regression = (
-            research_algorithm_near_area.get_fig_with_regression_algo(
-                self.ticker_data, self.name_ticker
-            )
-        )
+        # self.fig_with_regression = (
+        #    research_algorithm_near_area.get_fig_with_regression_algo(
+        #        self.ticker_data, self.name_ticker
+        #    )
+        # )
+        ##################################################################
+        # (
+        #    self.fig_hist_global_minimum,
+        #    self.fig_plot_global_minimum,
+        #    self.global_regression_std,
+        #    self.global_regression_skew,
+        #    self.global_distance_from_regression_to_current_day,
+        #    self.global_distance_from_regression_to_current_day_in_std,
+        #    self.global_regression_date,
+        # ) = research_algorithm_near_area.get_fig_hist_from_regression_global(
+        #    self.ticker_data, self.name_ticker
+        # )
+        ##################################################################
+        # (
+        #    self.fig_hist_local_minimum,
+        #    self.fig_plot_local_minimum,
+        #    self.local_regression_std,
+        #    self.local_regression_skew,
+        #    self.local_distance_from_regression_to_current_day,
+        #    self.local_distance_from_regression_to_current_day_in_std,
+        #    self.local_regression_date,
+        # ) = research_algorithm_near_area.get_fig_hist_from_regression_local(
+        #    self.ticker_data, self.name_ticker
+        # )
         #################################################################
+        #################################################################
+        #################################################################
+        #################################################################
+
+        # Optimize Algo
         (
+            self.fig_with_regression,
             self.fig_hist_global_minimum,
             self.fig_plot_global_minimum,
             self.global_regression_std,
@@ -45,11 +75,6 @@ class DataAnalysisTicker:
             self.global_distance_from_regression_to_current_day,
             self.global_distance_from_regression_to_current_day_in_std,
             self.global_regression_date,
-        ) = research_algorithm_near_area.get_fig_hist_from_regression_global(
-            self.ticker_data, self.name_ticker
-        )
-        #################################################################
-        (
             self.fig_hist_local_minimum,
             self.fig_plot_local_minimum,
             self.local_regression_std,
@@ -57,12 +82,9 @@ class DataAnalysisTicker:
             self.local_distance_from_regression_to_current_day,
             self.local_distance_from_regression_to_current_day_in_std,
             self.local_regression_date,
-        ) = research_algorithm_near_area.get_fig_hist_from_regression_local(
+        ) = research_algorithm_near_area.auto_calculation_production(
             self.ticker_data, self.name_ticker
         )
-        #################################################################
-        #################################################################
-        #################################################################
 
 
 def get_content_from_DataAnalysisTicker(data: DataAnalysisTicker):

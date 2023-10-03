@@ -31,6 +31,7 @@ app = dash.Dash(external_stylesheets=[dbc.themes.BOOTSTRAP])
 # the style arguments for the sidebar. We use position:fixed and a fixed width
 SIDEBAR_STYLE = {
     "position": "fixed",
+    "overflow": "scroll",
     "top": 0,
     "left": 0,
     "bottom": 0,
