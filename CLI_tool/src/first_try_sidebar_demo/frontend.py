@@ -27,6 +27,9 @@ from auxiliry import leumi
 # Incorporate data
 
 app = dash.Dash(external_stylesheets=[dbc.themes.BOOTSTRAP])
+# app = dash.Dash(__name__)
+
+# app = dash.Dash(__name__, external_stylesheets=[dbc.themes.BOOTSTRAP])
 
 # the style arguments for the sidebar. We use position:fixed and a fixed width
 SIDEBAR_STYLE = {
@@ -35,8 +38,9 @@ SIDEBAR_STYLE = {
     "top": 0,
     "left": 0,
     "bottom": 0,
-    "width": "16rem",
-    "padding": "2rem 1rem",
+    "width": "13rem",
+    # "padding": "2rem 1rem",
+    "padding": "0.5rem 0.5rem",
     "background-color": "#f8f9fa",
 }
 
@@ -50,22 +54,47 @@ SIDEBAR_STYLE = {
 # ]
 
 dict_display_data = display_page.process_data()
-process_ticker_name = map(
+# process_ticker_name = map(
+#    lambda ticker_name: dbc.NavLink(
+#        "Stock " + ticker_name, href="/" + ticker_name, active="exact"
+#    ),
+#    database_ticker.tickers,
+# )
+# sidebar_list_data = list(process_ticker_name)
+
+process_indexes_names = map(
     lambda ticker_name: dbc.NavLink(
         "Stock " + ticker_name, href="/" + ticker_name, active="exact"
     ),
-    database_ticker.tickers,
+    database_ticker.ticker_indexes,
 )
-sidebar_list_data = list(process_ticker_name)
+sidebar_list_indexes = list(process_indexes_names)
 
+process_stocks_names = map(
+    lambda ticker_name: dbc.NavLink(
+        "Stock " + ticker_name, href="/" + ticker_name, active="exact"
+    ),
+    database_ticker.ticker_stocks,
+)
+sidebar_list_stocks = list(process_stocks_names)
 
 sidebar = html.Div(
     [
-        html.H2("Tickers", className="display-4"),
+        # html.H2("Analytic", className="display-4"),
+        html.H2("Analytic"),
         html.Hr(),
-        html.P("Please select your Ticker from the sidebar layout", className="lead"),
+        html.H4("Indexes"),
+        html.P("Please select Index", className="lead"),  # Sidebar
         dbc.Nav(
-            sidebar_list_data,
+            sidebar_list_indexes,
+            vertical=True,
+            pills=True,
+        ),
+        html.Hr(),
+        html.H4("Stocks"),
+        html.P("Please select Stock", className="lead"),  # Sidebar
+        dbc.Nav(
+            sidebar_list_stocks,
             vertical=True,
             pills=True,
         ),
@@ -99,7 +128,9 @@ def render_page_content(pathname):
     elif pathname == "/LEUMI":
         return html.P("Oh cool, this is page 3!" + pathname[1:])
         # return display_page.get_content_html_ticker_custom(pathname[1:])
-    elif pathname[1:] in database_ticker.tickers:
+    elif pathname[1:] in database_ticker.ticker_indexes:
+        return dict_display_data[pathname[1:]]
+    elif pathname[1:] in database_ticker.ticker_stocks:
         return dict_display_data[pathname[1:]]
 
     # If the user tries to reach a different page, return a 404 message
@@ -115,3 +146,4 @@ def render_page_content(pathname):
 
 if __name__ == "__main__":
     app.run_server(port=8050)
+    # app.run_server(port=80, debug=False ,host="0.0.0.0") # production deploy

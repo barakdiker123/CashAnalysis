@@ -232,12 +232,13 @@ def auto_calculation_production(ticker_series, name_ticker):
         fig_plot = px.line(df2[pd_err.index[0] :], title="Last Local Minimum")
 
         df2 = change_alignment(ticker_series["High"], a2, b2)
-        df["pred z"] = another_reg["pred y"]
+        df["Local Minimum Reg"] = another_reg["pred y"]
+        df["Global Minimum Reg"] = df["pred y"]
         return (
             px.line(
                 df,
                 x="Dates",
-                y=["pred y", "High", "pred z"],
+                y=["Global Minimum Reg", "High", "Local Minimum Reg"],
                 hover_data={"Dates": "|%B %d, %Y"},
                 title="Ticker High " + name_ticker,
             ),
@@ -266,11 +267,12 @@ def auto_calculation_production(ticker_series, name_ticker):
             ].std(),  # "Your distance is in std units "
             pd_err.index[0],  # Local Regression from :
         )
+    df["Global Minimum Reg"] = df["pred y"]
     return (
         px.line(
             df,
             x="Dates",
-            y=["pred y", "High"],
+            y=["Global Minimum Reg", "High"],
             hover_data={"Dates": "|%B %d, %Y"},
             title="Ticker High " + name_ticker,
         ),

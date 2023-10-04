@@ -20,7 +20,7 @@ class DataAnalysisTicker:
         """Calculate and create display object of each element"""
         self.name_ticker = name_ticker
         current_ticker_name = self.name_ticker
-        self.ticker_data = yf.download(current_ticker_name, period="15y", interval="1d")
+        self.ticker_data = yf.download(current_ticker_name, period="10y", interval="1d")
         self.ticker_data["Dates"] = self.ticker_data.index
 
         self.fig = px.line(
@@ -28,7 +28,7 @@ class DataAnalysisTicker:
             x="Dates",
             y=["High", "Low"],
             hover_data={"Dates": "|%B %d, %Y"},
-            title="custom tick labels",
+            title="Ticker " + self.name_ticker + " displaying High low in days",
         )
 
         # self.fig_with_regression = (
@@ -110,6 +110,7 @@ def get_content_from_DataAnalysisTicker(data: DataAnalysisTicker):
                 ]
             ),
             dbc.Row([dbc.Col([dcc.Graph(figure=data.fig_with_regression)])]),
+            html.Hr(),
             dbc.Row(
                 [
                     dbc.Col([dcc.Graph(figure=data.fig_hist_global_minimum)]),
@@ -117,42 +118,112 @@ def get_content_from_DataAnalysisTicker(data: DataAnalysisTicker):
                 ]
             ),
             dbc.Row(
-                [
-                    dbc.Col(
-                        [
-                            html.Div(
-                                "Global Regression std:"
-                                + str(data.global_regression_std),
-                                className="text-center",
-                            ),
-                            html.Div(
-                                "Global Regression skew:"
-                                + str(data.global_regression_skew),
-                                className="text-center",
-                            ),
-                            html.Div(
-                                "According to Global regression your distance is:"
-                                + str(
-                                    data.global_distance_from_regression_to_current_day
+                html.Table(
+                    children=[
+                        html.Thead(
+                            children=[
+                                html.Tr(
+                                    children=[
+                                        html.Th("Property "),
+                                        html.Th("Data "),
+                                    ]
+                                )
+                            ]
+                        ),
+                        html.Tbody(
+                            children=[
+                                html.Tr(
+                                    children=[
+                                        html.Td(
+                                            "Global Regression std:",
+                                        ),
+                                        html.Td(str(data.global_regression_std)),
+                                    ]
                                 ),
-                                className="text-center",
-                            ),
-                            html.Div(
-                                "According to Global regression in std your distance is:"
-                                + str(
-                                    data.global_distance_from_regression_to_current_day_in_std
+                                html.Tr(
+                                    children=[
+                                        html.Td(
+                                            "Global Regression skew:",
+                                        ),
+                                        html.Td(str(data.global_regression_skew)),
+                                    ]
                                 ),
-                                className="text-center",
-                            ),
-                            html.Div(
-                                "Regression from Date: "
-                                + str(data.global_regression_date),
-                                className="text-center",
-                            ),
-                        ]
-                    )
-                ]
+                                html.Tr(
+                                    children=[
+                                        html.Td(
+                                            "According to Global regression your distance is:",
+                                        ),
+                                        html.Td(
+                                            str(
+                                                data.global_distance_from_regression_to_current_day
+                                            )
+                                        ),
+                                    ]
+                                ),
+                                html.Tr(
+                                    children=[
+                                        html.Td(
+                                            "According to Global regression in std your distance is:",
+                                        ),
+                                        html.Td(
+                                            str(
+                                                data.global_distance_from_regression_to_current_day_in_std
+                                            )
+                                        ),
+                                    ]
+                                ),
+                                html.Tr(
+                                    children=[
+                                        html.Td(
+                                            "Regression from Date: ",
+                                        ),
+                                        html.Td(str(data.global_regression_date)),
+                                    ]
+                                ),
+                            ]
+                        ),
+                    ],
+                    className="styled-table",
+                )
             ),
+            #    dbc.Row(
+            #        [
+            #            dbc.Col(
+            #                [
+            #                    html.Div(
+            #                        "Global Regression std:"
+            #                        + str(data.global_regression_std),
+            #                        className="text-center",
+            #                    ),
+            #                    html.Div(
+            #                        "Global Regression skew:"
+            #                        + str(data.global_regression_skew),
+            #                        className="text-center",
+            #                    ),
+            #                    html.Div(
+            #                        "According to Global regression your distance is:"
+            #                        + str(
+            #                            data.global_distance_from_regression_to_current_day
+            #                        ),
+            #                        className="text-center",
+            #                    ),
+            #                    html.Div(
+            #                        "According to Global regression in std your distance is:"
+            #                        + str(
+            #                            data.global_distance_from_regression_to_current_day_in_std
+            #                        ),
+            #                        className="text-center",
+            #                    ),
+            #                    html.Div(
+            #                        "Regression from Date: "
+            #                        + str(data.global_regression_date),
+            #                        className="text-center",
+            #                    ),
+            #                ]
+            #            )
+            #        ]
+            #    ),
+            html.Hr(),
             dbc.Row(
                 [
                     dbc.Col([dcc.Graph(figure=data.fig_hist_local_minimum)]),
@@ -160,42 +231,111 @@ def get_content_from_DataAnalysisTicker(data: DataAnalysisTicker):
                 ]
             ),
             dbc.Row(
-                [
-                    dbc.Col(
-                        [
-                            html.Div(
-                                "local Regression std:"
-                                + str(data.local_regression_std),
-                                className="text-center",
-                            ),
-                            html.Div(
-                                "local Regression skew:"
-                                + str(data.local_regression_skew),
-                                className="text-center",
-                            ),
-                            html.Div(
-                                "According to local regression your distance is:"
-                                + str(
-                                    data.local_distance_from_regression_to_current_day
+                html.Table(
+                    children=[
+                        html.Thead(
+                            children=[
+                                html.Tr(
+                                    children=[
+                                        html.Th("Property "),
+                                        html.Th("Data "),
+                                    ]
+                                )
+                            ]
+                        ),
+                        html.Tbody(
+                            children=[
+                                html.Tr(
+                                    children=[
+                                        html.Td(
+                                            "Local Regression std:",
+                                        ),
+                                        html.Td(str(data.local_regression_std)),
+                                    ]
                                 ),
-                                className="text-center",
-                            ),
-                            html.Div(
-                                "According to local regression in std your distance is:"
-                                + str(
-                                    data.local_distance_from_regression_to_current_day_in_std
+                                html.Tr(
+                                    children=[
+                                        html.Td(
+                                            "Local Regression skew:",
+                                        ),
+                                        html.Td(str(data.local_regression_skew)),
+                                    ]
                                 ),
-                                className="text-center",
-                            ),
-                            html.Div(
-                                "Regression from Date: "
-                                + str(data.local_regression_date),
-                                className="text-center",
-                            ),
-                        ]
-                    )
-                ]
+                                html.Tr(
+                                    children=[
+                                        html.Td(
+                                            "According to Local regression your distance is:",
+                                        ),
+                                        html.Td(
+                                            str(
+                                                data.local_distance_from_regression_to_current_day
+                                            )
+                                        ),
+                                    ]
+                                ),
+                                html.Tr(
+                                    children=[
+                                        html.Td(
+                                            "According to Local regression in std your distance is:",
+                                        ),
+                                        html.Td(
+                                            str(
+                                                data.local_distance_from_regression_to_current_day_in_std
+                                            )
+                                        ),
+                                    ]
+                                ),
+                                html.Tr(
+                                    children=[
+                                        html.Td(
+                                            "Regression from Date: ",
+                                        ),
+                                        html.Td(str(data.local_regression_date)),
+                                    ]
+                                ),
+                            ]
+                        ),
+                    ],
+                    className="styled-table",
+                )
             ),
+            #    dbc.Row(
+            #        [
+            #            dbc.Col(
+            #                [
+            #                    html.Div(
+            #                        "local Regression std:"
+            #                        + str(data.local_regression_std),
+            #                        className="text-center",
+            #                    ),
+            #                    html.Div(
+            #                        "local Regression skew:"
+            #                        + str(data.local_regression_skew),
+            #                        className="text-center",
+            #                    ),
+            #                    html.Div(
+            #                        "According to local regression your distance is:"
+            #                        + str(
+            #                            data.local_distance_from_regression_to_current_day
+            #                        ),
+            #                        className="text-center",
+            #                    ),
+            #                    html.Div(
+            #                        "According to local regression in std your distance is:"
+            #                        + str(
+            #                            data.local_distance_from_regression_to_current_day_in_std
+            #                        ),
+            #                        className="text-center",
+            #                    ),
+            #                    html.Div(
+            #                        "Regression from Date: "
+            #                        + str(data.local_regression_date),
+            #                        className="text-center",
+            #                    ),
+            #                ]
+            #            )
+            #        ]
+            #    ),
         ],
         style=css.CONTENT_STYLE,
     )
@@ -203,7 +343,7 @@ def get_content_from_DataAnalysisTicker(data: DataAnalysisTicker):
 
 
 def process_data():
-    tickers = database_ticker.tickers
+    tickers = database_ticker.ticker_indexes + database_ticker.ticker_stocks
 
     tickers_DataAnalysisTicker = map(
         lambda ticker_name: DataAnalysisTicker(ticker_name), tickers
