@@ -161,6 +161,14 @@ def get_content_from_DataAnalysisTicker(data: DataAnalysisTicker):
                                     ]
                                 ),
                                 html.Tr(
+                                    className="active-row"
+                                    if 0.5
+                                    < data.global_distance_from_regression_to_current_day_in_std
+                                    < 1.5
+                                    or -0.5
+                                    > data.global_distance_from_regression_to_current_day_in_std
+                                    > -1.5
+                                    else "",
                                     children=[
                                         html.Td(
                                             "According to Global regression in std your distance is:",
@@ -170,7 +178,7 @@ def get_content_from_DataAnalysisTicker(data: DataAnalysisTicker):
                                                 data.global_distance_from_regression_to_current_day_in_std
                                             )
                                         ),
-                                    ]
+                                    ],
                                 ),
                                 html.Tr(
                                     children=[
@@ -274,6 +282,14 @@ def get_content_from_DataAnalysisTicker(data: DataAnalysisTicker):
                                     ]
                                 ),
                                 html.Tr(
+                                    className="active-row"
+                                    if 0.5  # minimum distance from std to current day
+                                    < data.global_distance_from_regression_to_current_day_in_std
+                                    < 1.5  # maximum distance from std to current day
+                                    or -0.5
+                                    > data.global_distance_from_regression_to_current_day_in_std
+                                    > -1.5
+                                    else "",
                                     children=[
                                         html.Td(
                                             "According to Local regression in std your distance is:",
@@ -283,7 +299,7 @@ def get_content_from_DataAnalysisTicker(data: DataAnalysisTicker):
                                                 data.local_distance_from_regression_to_current_day_in_std
                                             )
                                         ),
-                                    ]
+                                    ],
                                 ),
                                 html.Tr(
                                     children=[

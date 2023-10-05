@@ -220,6 +220,15 @@ def auto_calculation_production(ticker_series, name_ticker):
 
     df1 = change_alignment(ticker_series["High"], a, b)
     fig_hist_global = px.histogram(df1[err.idxmin() :], title="Global Minimum")
+    fig_hist_global.add_vline(
+        x=df1[df1.columns[-1]][err.idxmin() :].iloc[-1],
+        line_dash="dash",
+        line_color="Red",
+    )
+    fig_hist_global.add_annotation(
+        x=df1[df1.columns[-1]][err.idxmin() :].iloc[-1], text="Current"
+    )
+
     fig_plot_global = px.line(df1[err.idxmin() :], title="Global Minimum")
 
     if len(pd_err) > 0:
@@ -229,19 +238,35 @@ def auto_calculation_production(ticker_series, name_ticker):
 
         df2 = change_alignment(ticker_series["High"], a2, b2)
         fig_hist = px.histogram(df2[pd_err.index[0] :], title="Last Local Minimum")
+        fig_hist.add_vline(
+            x=df2[df2.columns[-1]][pd_err.index[0] :].iloc[-1],
+            line_dash="dash",
+            line_color="Red",
+        )
+        fig_hist.add_annotation(
+            x=df2[df2.columns[-1]][pd_err.index[0] :].iloc[-1], text="Current"
+        )
         fig_plot = px.line(df2[pd_err.index[0] :], title="Last Local Minimum")
 
         df2 = change_alignment(ticker_series["High"], a2, b2)
         df["Local Minimum Reg"] = another_reg["pred y"]
         df["Global Minimum Reg"] = df["pred y"]
+
+        fig_local = px.line(
+            df,
+            x="Dates",
+            y=["Global Minimum Reg", "High", "Local Minimum Reg"],
+            hover_data={"Dates": "|%B %d, %Y"},
+            title="Ticker High " + name_ticker,
+        )
+        fig_local.add_vline(x=pd_err.index[0], line_dash="dash", line_color="Green")
+        fig_local.add_annotation(x=pd_err.index[0], text="Local")
+        fig_local.add_vline(
+            x=pd.to_datetime(err.idxmin()), line_dash="dash", line_color="Blue"
+        )
+        fig_local.add_annotation(x=pd.to_datetime(err.idxmin()), text="Global")
         return (
-            px.line(
-                df,
-                x="Dates",
-                y=["Global Minimum Reg", "High", "Local Minimum Reg"],
-                hover_data={"Dates": "|%B %d, %Y"},
-                title="Ticker High " + name_ticker,
-            ),
+            fig_local,
             fig_hist_global,
             fig_plot_global,
             df1[err.idxmin() :][df1.columns[-1]].std(),  # "Global Regression std:"
@@ -268,7 +293,7 @@ def auto_calculation_production(ticker_series, name_ticker):
             pd_err.index[0],  # Local Regression from :
         )
     df["Global Minimum Reg"] = df["pred y"]
-    return (
+    fig_global = (
         px.line(
             df,
             x="Dates",
@@ -276,6 +301,13 @@ def auto_calculation_production(ticker_series, name_ticker):
             hover_data={"Dates": "|%B %d, %Y"},
             title="Ticker High " + name_ticker,
         ),
+    )
+    fig_global.add_vline(
+        x=pd.to_datetime(err.idxmin()), line_dash="dash", line_color="Blue"
+    )
+    fig_global.add_annotation(x=pd.to_datetime(err.idxmin()), text="Global")
+    return (
+        fig_global,
         fig_hist_global,
         fig_plot_global,
         df1[err.idxmin() :][df1.columns[-1]].std(),  # "Global Regression std:"

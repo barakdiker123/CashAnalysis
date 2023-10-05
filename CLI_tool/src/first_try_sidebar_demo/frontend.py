@@ -118,16 +118,16 @@ def render_page_content(pathname):
     if pathname == "/":
         # return html.P("This is the content of the home page!")
         return backend.get_content()
-    elif pathname == "/LUMI":
-        print(pathname[1:])
-        return display_page.get_content_html_ticker(pathname[1:])  # "LUMI"
-        # html.P("This is the content of page 1. Yay!")
-    elif pathname == "/CEL":
-        print(pathname[1:])
-        return display_page.get_content_html_ticker(pathname[1:])  # "LUMI"
-    elif pathname == "/LEUMI":
-        return html.P("Oh cool, this is page 3!" + pathname[1:])
-        # return display_page.get_content_html_ticker_custom(pathname[1:])
+    # elif pathname == "/LUMI":
+    #    print(pathname[1:])
+    #    return display_page.get_content_html_ticker(pathname[1:])  # "LUMI"
+    #    # html.P("This is the content of page 1. Yay!")
+    # elif pathname == "/CEL":
+    #    print(pathname[1:])
+    #    return display_page.get_content_html_ticker(pathname[1:])  # "LUMI"
+    # elif pathname == "/LEUMI":
+    #    return html.P("Oh cool, this is page 3!" + pathname[1:])
+    #    # return display_page.get_content_html_ticker_custom(pathname[1:])
     elif pathname[1:] in database_ticker.ticker_indexes:
         return dict_display_data[pathname[1:]]
     elif pathname[1:] in database_ticker.ticker_stocks:
@@ -145,5 +145,5 @@ def render_page_content(pathname):
 
 
 if __name__ == "__main__":
-    app.run_server(port=8050)
-    # app.run_server(port=80, debug=False ,host="0.0.0.0") # production deploy
+    # app.run_server(port=8050)
+    app.run_server(port=80, debug=False, host="0.0.0.0")  # production deploy
