@@ -293,15 +293,14 @@ def auto_calculation_production(ticker_series, name_ticker):
             pd_err.index[0],  # Local Regression from :
         )
     df["Global Minimum Reg"] = df["pred y"]
-    fig_global = (
-        px.line(
-            df,
-            x="Dates",
-            y=["Global Minimum Reg", "High"],
-            hover_data={"Dates": "|%B %d, %Y"},
-            title="Ticker High " + name_ticker,
-        ),
+    fig_global = px.line(
+        df,
+        x="Dates",
+        y=["Global Minimum Reg", "High"],
+        hover_data={"Dates": "|%B %d, %Y"},
+        title="Ticker High " + name_ticker,
     )
+
     fig_global.add_vline(
         x=pd.to_datetime(err.idxmin()), line_dash="dash", line_color="Blue"
     )
