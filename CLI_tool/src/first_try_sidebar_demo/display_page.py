@@ -21,6 +21,8 @@ class DataAnalysisTicker:
         self.name_ticker = name_ticker
         current_ticker_name = self.name_ticker
         self.ticker_data = yf.download(current_ticker_name, period="10y", interval="1d")
+        if self.ticker_data.empty:
+            print("Empty DataFrame ", name_ticker)
         self.ticker_data["Dates"] = self.ticker_data.index
 
         self.fig = px.line(
@@ -284,10 +286,10 @@ def get_content_from_DataAnalysisTicker(data: DataAnalysisTicker):
                                 html.Tr(
                                     className="active-row"
                                     if 0.5  # minimum distance from std to current day
-                                    < data.global_distance_from_regression_to_current_day_in_std
+                                    < data.local_distance_from_regression_to_current_day_in_std
                                     < 1.5  # maximum distance from std to current day
                                     or -0.5
-                                    > data.global_distance_from_regression_to_current_day_in_std
+                                    > data.local_distance_from_regression_to_current_day_in_std
                                     > -1.5
                                     else "",
                                     children=[
