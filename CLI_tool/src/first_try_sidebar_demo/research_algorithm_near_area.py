@@ -329,6 +329,63 @@ def auto_calculation_production(ticker_series, name_ticker):
     )
 
 
+def auto_calculation_production_from_date(ticker_series, name_ticker, from_date):
+    df_nelder = smooth_plot(ticker_series, "High")
+    df_nelder = pd.DataFrame(df_nelder)
+    # err = finding_last_big_change_nelder_mead(df_nelder)
+    a, b, df = regression_from_date(ticker_series, pd.to_datetime(from_date))
+    df["Dates"] = df.index
+
+    # Plot results
+    pd_err = pd.DataFrame(err, columns=["err"])
+    pd_err["min"] = pd_err.err[
+        (pd_err.err.shift(1) > pd_err.err) & (pd_err.err.shift(-1) > pd_err.err)
+    ]
+    pd_err = pd_err.dropna()  # drops the NaN elements
+    pd_err["min"] = pd_err["min"].apply(np.sqrt)
+    # plt.scatter(pd_err.index, pd_err['min'], c='r')
+
+    df1 = change_alignment(ticker_series["High"], a, b)
+    fig_hist_global = px.histogram(df1[from_date:], title="From Date")
+    fig_hist_global.add_vline(
+        x=df1[df1.columns[-1]][from_date:].iloc[-1],
+        line_dash="dash",
+        line_color="Red",
+    )
+    fig_hist_global.add_annotation(
+        x=df1[df1.columns[-1]][from_date:].iloc[-1], text="Current"
+    )
+
+    fig_plot_global = px.line(df1[from_date:], title="Global Minimum")
+
+    df["Global Minimum Reg"] = df["pred y"]
+    fig_global = px.line(
+        df,
+        x="Dates",
+        y=["Global Minimum Reg", "High"],
+        hover_data={"Dates": "|%B %d, %Y"},
+        title="Ticker High " + name_ticker,
+    )
+
+    fig_global.add_vline(
+        x=pd.to_datetime(from_date), line_dash="dash", line_color="Blue"
+    )
+    fig_global.add_annotation(x=pd.to_datetime(from_date), text="Global")
+    return (
+        fig_global,
+        fig_hist_global,
+        fig_plot_global,
+        df1[from_date:][df1.columns[-1]].std(),  # "Global Regression std:"
+        df1[from_date:][df1.columns[-1]].skew(),  # "Global Regression skew:"
+        df1[df1.columns[-1]][from_date:].iloc[
+            -1
+        ],  #  "According to Local Regression you are at "
+        df1[df1.columns[-1]][from_date:].iloc[-1]
+        / df1[from_date:][df1.columns[-1]].std(),  # "Your distance is in std units "
+        pd.to_datetime(from_date),  # Regression from Date
+    )
+
+
 def auto_calculation(ticker_series, name_ticker):
     df_nelder = smooth_plot(ticker_series, "High")
     df_nelder = pd.DataFrame(df_nelder)
