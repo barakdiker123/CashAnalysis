@@ -99,10 +99,15 @@ def generate_double_slider(ticker, ticker_id):
         Output("output-container-regression-distance" + ticker_id, "children"),
         Output("output-container-regression-distance-std" + ticker_id, "children"),
         Output("output-container-regression-current-date" + ticker_id, "children"),
+        Output("regression-prob" + ticker_id, "children"),
+        Output("lower-future-bound" + ticker_id, "children"),
+        Output("upper-future-bound" + ticker_id, "children"),
         # Output("big-range-slider", "value"),
         Input("big-range-slider" + ticker_id, "value"),
+        Input("closure-range-slider" + ticker_id, "value"),
+        Input("predict-slider" + ticker_id, "value"),
     )
-    def update_output(date_number):
+    def update_output(date_number, closure_range, predict_slider):
         if date_number == None:
             date_number = [0, len(ticker) - 1]
         ticker["Date"] = ticker.index
@@ -117,7 +122,9 @@ def generate_double_slider(ticker, ticker_id):
         fig_hist = px.histogram(
             realignment_data[from_date:to_date], title="Slider Regression"
         )
-
+        end_value = (
+            realignment_data[to_date:to_date].iloc[0].iloc[0]
+        )  # end 'High' Value
         fig_hist.add_vline(
             x=realignment_data[to_date:to_date].iloc[0].iloc[0],  # End 'High' Value
             line_dash="dash",
@@ -127,10 +134,49 @@ def generate_double_slider(ticker, ticker_id):
             x=realignment_data[to_date:to_date].iloc[0].iloc[0], text="End"
         )
 
+        fig_hist.add_vline(
+            x=closure_range[0],
+            line_dash="dash",
+            line_color="Blue",
+        )
+        fig_hist.add_annotation(x=closure_range[0], text="Bottom")
+        fig_hist.add_vline(
+            x=closure_range[1],
+            line_dash="dash",
+            line_color="Blue",
+        )
+        fig_hist.add_annotation(x=closure_range[1], text="Top")
+
+        data_range = realignment_data[from_date:to_date]
+        count_inside_range = data_range[
+            (data_range > closure_range[0]) & (data_range < closure_range[1])
+        ].count()
+        prob_inside_range = count_inside_range / len(data_range)
+
         fig.add_vline(x=from_date)
         fig.add_annotation(x=from_date, text="Start")
         fig.add_vline(x=to_date)
         fig.add_annotation(x=to_date, text="End")
+        fig.add_trace(
+            go.Scatter(
+                x=list(reg_line.Date),
+                y=list(reg_line["pred y"] + closure_range[0]),
+                marker_color="blue",
+            )
+        )
+        fig.add_trace(
+            go.Scatter(
+                x=list(reg_line.Date),
+                y=list(reg_line["pred y"] + closure_range[1]),
+                marker_color="blue",
+            )
+        )
+        lower_future_bound = (
+            ticker["High"][to_date] + a * predict_slider + closure_range[0]
+        )
+        upper_future_bound = (
+            ticker["High"][to_date] + a * predict_slider + closure_range[1]
+        )
         fig.update_layout(yaxis_range=[ticker["High"].min(), ticker["High"].max()])
         # fig.show()
         #
@@ -146,6 +192,9 @@ def generate_double_slider(ticker, ticker_id):
             ),
             # str(realignment_data[to_date:to_date].iloc[0].iloc[0]),
             str(to_date),
+            prob_inside_range,
+            lower_future_bound,
+            upper_future_bound,
         )
 
     return update_output
@@ -267,6 +316,17 @@ def get_content_from_DataAnalysisTicker(data: DataAnalysisTicker):
                         figure={},
                         id="output-container-regression" + data.ticker_id,
                     ),
+                    dcc.RangeSlider(
+                        min=-2000,
+                        max=2000,
+                        step=1,
+                        value=[-100, 100],
+                        id="closure-range-slider" + data.ticker_id,
+                    ),
+                    html.Div("Select How Far from end to predict"),
+                    dcc.Slider(
+                        0, 30, 1, value=14, id="predict-slider" + data.ticker_id
+                    ),
                     html.Table(
                         children=[
                             html.Thead(
@@ -292,6 +352,47 @@ def get_content_from_DataAnalysisTicker(data: DataAnalysisTicker):
                                                 ),
                                                 id="output-container-regression-std"
                                                 + data.ticker_id,
+                                            ),
+                                        ]
+                                    ),
+                                    html.Tr(
+                                        children=[
+                                            html.Td(
+                                                "Lower Future Bound:",
+                                            ),
+                                            html.Td(
+                                                children=str(
+                                                    data.global_regression_std
+                                                ),
+                                                id="lower-future-bound"
+                                                + data.ticker_id,
+                                            ),
+                                        ]
+                                    ),
+                                    html.Tr(
+                                        children=[
+                                            html.Td(
+                                                "Upper Future Bound:",
+                                            ),
+                                            html.Td(
+                                                children=str(
+                                                    data.global_regression_std
+                                                ),
+                                                id="upper-future-bound"
+                                                + data.ticker_id,
+                                            ),
+                                        ]
+                                    ),
+                                    html.Tr(
+                                        children=[
+                                            html.Td(
+                                                "Prob inside range",
+                                            ),
+                                            html.Td(
+                                                children=str(
+                                                    data.global_regression_std
+                                                ),
+                                                id="regression-prob" + data.ticker_id,
                                             ),
                                         ]
                                     ),
