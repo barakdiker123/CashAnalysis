@@ -87,12 +87,18 @@ def create_slider_stock(ticker, from_date, to_date):
     )
 
     # fig.show()
-    return fig
+    return fig, a, b, data
 
 
 def generate_double_slider(ticker, ticker_id):
     @callback(
         Output("output-container-range-slider" + ticker_id, "figure"),
+        Output("output-container-regression" + ticker_id, "figure"),
+        Output("output-container-regression-std" + ticker_id, "children"),
+        Output("output-container-regression-skew" + ticker_id, "children"),
+        Output("output-container-regression-distance" + ticker_id, "children"),
+        Output("output-container-regression-distance-std" + ticker_id, "children"),
+        Output("output-container-regression-current-date" + ticker_id, "children"),
         # Output("big-range-slider", "value"),
         Input("big-range-slider" + ticker_id, "value"),
     )
@@ -102,7 +108,25 @@ def generate_double_slider(ticker, ticker_id):
         ticker["Date"] = ticker.index
         from_date = pd.to_datetime(ticker["Date"].iloc[date_number].iloc[0])
         to_date = pd.to_datetime(ticker["Date"].iloc[date_number].iloc[1])
-        fig = create_slider_stock(ticker, from_date, to_date)
+        # fig = create_slider_stock(ticker, from_date, to_date)
+
+        fig, a, b, reg_line = create_slider_stock(ticker, from_date, to_date)
+        realignment_data = research_algorithm_near_area.change_alignment(
+            ticker["High"], a, b
+        )
+        fig_hist = px.histogram(
+            realignment_data[from_date:to_date], title="Slider Regression"
+        )
+
+        fig_hist.add_vline(
+            x=realignment_data[to_date:to_date].iloc[0].iloc[0],  # End 'High' Value
+            line_dash="dash",
+            line_color="Red",
+        )
+        fig_hist.add_annotation(
+            x=realignment_data[to_date:to_date].iloc[0].iloc[0], text="End"
+        )
+
         fig.add_vline(x=from_date)
         fig.add_annotation(x=from_date, text="Start")
         fig.add_vline(x=to_date)
@@ -110,7 +134,19 @@ def generate_double_slider(ticker, ticker_id):
         fig.update_layout(yaxis_range=[ticker["High"].min(), ticker["High"].max()])
         # fig.show()
         #
-        return fig
+        return (
+            fig,
+            fig_hist,
+            str(realignment_data.loc[from_date:to_date].std().iloc[0]),
+            str(realignment_data.loc[from_date:to_date].skew().iloc[0]),
+            str(ticker["High"][to_date] - reg_line["pred y"][to_date]),
+            str(
+                realignment_data[to_date:to_date].iloc[0].iloc[0]
+                / realignment_data.loc[from_date:to_date].std().iloc[0]
+            ),
+            # str(realignment_data[to_date:to_date].iloc[0].iloc[0]),
+            str(to_date),
+        )
 
     return update_output
 
@@ -226,6 +262,107 @@ def get_content_from_DataAnalysisTicker(data: DataAnalysisTicker):
                     dcc.Graph(
                         figure={},  # fig,
                         id="output-container-range-slider" + data.ticker_id,
+                    ),
+                    dcc.Graph(
+                        figure={},
+                        id="output-container-regression" + data.ticker_id,
+                    ),
+                    html.Table(
+                        children=[
+                            html.Thead(
+                                children=[
+                                    html.Tr(
+                                        children=[
+                                            html.Th("Property "),
+                                            html.Th("Data "),
+                                        ]
+                                    )
+                                ]
+                            ),
+                            html.Tbody(
+                                children=[
+                                    html.Tr(
+                                        children=[
+                                            html.Td(
+                                                " Regression std:",
+                                            ),
+                                            html.Td(
+                                                children=str(
+                                                    data.global_regression_std
+                                                ),
+                                                id="output-container-regression-std"
+                                                + data.ticker_id,
+                                            ),
+                                        ]
+                                    ),
+                                    html.Tr(
+                                        children=[
+                                            html.Td(
+                                                " Regression skew:",
+                                            ),
+                                            html.Td(
+                                                str(data.global_regression_skew),
+                                                id="output-container-regression-skew"
+                                                + data.ticker_id,
+                                            ),
+                                        ]
+                                    ),
+                                    html.Tr(
+                                        children=[
+                                            html.Td(
+                                                "According to  regression your distance is:",
+                                            ),
+                                            html.Td(
+                                                str(
+                                                    data.global_distance_from_regression_to_current_day
+                                                ),
+                                                id="output-container-regression-distance"
+                                                + data.ticker_id,
+                                            ),
+                                        ]
+                                    ),
+                                    html.Tr(
+                                        className=is_not_null_and_in_range(
+                                            data.global_distance_from_regression_to_current_day_in_std
+                                        ),
+                                        # className=
+                                        # "active-row"
+                                        # if 0.5
+                                        # < data.global_distance_from_regression_to_current_day_in_std
+                                        # < 1.5
+                                        # or -0.5
+                                        # > data.global_distance_from_regression_to_current_day_in_std
+                                        # > -1.5
+                                        # else "",
+                                        children=[
+                                            html.Td(
+                                                "According to  regression in std your distance is:",
+                                            ),
+                                            html.Td(
+                                                str(
+                                                    data.global_distance_from_regression_to_current_day_in_std
+                                                ),
+                                                id="output-container-regression-distance-std"
+                                                + data.ticker_id,
+                                            ),
+                                        ],
+                                    ),
+                                    html.Tr(
+                                        children=[
+                                            html.Td(
+                                                "Current Date: ",
+                                            ),
+                                            html.Td(
+                                                str(data.global_regression_date),
+                                                id="output-container-regression-current-date"
+                                                + data.ticker_id,
+                                            ),
+                                        ]
+                                    ),
+                                ]
+                            ),
+                        ],
+                        className="styled-table",
                     ),
                 ]
             ),
