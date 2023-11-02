@@ -26,7 +26,13 @@ from auxiliry import leumi
 # leumi = yf.download("LUMI.TA", period="15y", interval="1d")
 # Incorporate data
 
-app = dash.Dash(external_stylesheets=[dbc.themes.BOOTSTRAP])
+# external_stylesheets = ["https://codepen.io/chriddyp/pen/bWLwgP.css"]
+
+app = dash.Dash(
+    external_stylesheets=[
+        dbc.themes.BOOTSTRAP,
+    ]
+)
 # app = dash.Dash(__name__)
 
 # app = dash.Dash(__name__, external_stylesheets=[dbc.themes.BOOTSTRAP])
@@ -108,7 +114,10 @@ sidebar = html.Div(
 
 ################################################################
 
-content = html.Div(id="page-content", style=css.CONTENT_STYLE)
+content = html.Div(
+    id="page-content",
+    style=css.CONTENT_STYLE,
+)
 
 app.layout = html.Div([dcc.Location(id="url"), sidebar, content])
 
@@ -125,7 +134,7 @@ def render_page_content(pathname):
     # elif pathname == "/CEL":
     #    print(pathname[1:])
     #    return display_page.get_content_html_ticker(pathname[1:])  # "LUMI"
-    # elif pathname == "/LEUMI":
+    # elif pathname == "/LEUMI" , to_date:
     #    return html.P("Oh cool, this is page 3!" + pathname[1:])
     #    # return display_page.get_content_html_ticker_custom(pathname[1:])
     elif pathname[1:] in database_ticker.ticker_indexes:
@@ -146,4 +155,8 @@ def render_page_content(pathname):
 
 if __name__ == "__main__":
     # app.run_server(port=8050)
-    app.run_server(port=80, debug=False, host="0.0.0.0")  # production deploy
+    # app.run_server(port=80, debug=False, host="0.0.0.0")  # production deploy
+
+    from waitress import serve
+
+    serve(app.server, host="0.0.0.0", port=80, threads=10)

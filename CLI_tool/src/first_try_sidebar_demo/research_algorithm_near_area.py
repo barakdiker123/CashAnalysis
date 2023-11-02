@@ -356,7 +356,7 @@ def auto_calculation_production_from_date(ticker_series, name_ticker, from_date)
         x=df1[df1.columns[-1]][from_date:].iloc[-1], text="Current"
     )
 
-    fig_plot_global = px.line(df1[from_date:], title="Global Minimum")
+    fig_plot_global = px.line(df1[from_date:], title="From Date")
 
     df["Global Minimum Reg"] = df["pred y"]
     fig_global = px.line(
@@ -370,7 +370,7 @@ def auto_calculation_production_from_date(ticker_series, name_ticker, from_date)
     fig_global.add_vline(
         x=pd.to_datetime(from_date), line_dash="dash", line_color="Blue"
     )
-    fig_global.add_annotation(x=pd.to_datetime(from_date), text="Global")
+    fig_global.add_annotation(x=pd.to_datetime(from_date), text="from Date")
     return (
         fig_global,
         fig_hist_global,

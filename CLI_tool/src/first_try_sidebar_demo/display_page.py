@@ -7,10 +7,112 @@ import css
 import plotly.express as px
 import research_algorithm_near_area
 
+from dash import Dash, html, dcc, Input, Output, callback
+
 # import database
 import database_ticker
 
-# database_ticker = {}
+import plotly.graph_objects as go
+import pandas as pd
+from sklearn.linear_model import LinearRegression
+
+
+def regression_from_date(ticker, from_date, to_date):
+    indexing = pd.RangeIndex(start=0, stop=len(ticker), step=1)
+    ticker["numbers_slider"] = indexing
+    from_current_date = "{}-{}-{}".format(
+        from_date.year, from_date.month, from_date.day
+    )
+    to_current_date = "{}-{}-{}".format(to_date.year, to_date.month, to_date.day)
+    current_regression = ticker.loc[from_current_date:to_current_date]
+    linear_regressor = LinearRegression()
+    linear_regressor.fit(
+        current_regression["numbers_slider"].values.reshape(-1, 1),
+        current_regression["High"].values.reshape(-1, 1),
+    )
+    b = linear_regressor.intercept_
+    a = linear_regressor.coef_
+
+    temp = pd.Series(
+        linear_regressor.predict(
+            ticker["numbers_slider"].values.reshape(-1, 1)
+        ).reshape(-1)
+    )
+    ticker["Dates"] = ticker.index
+    data = ticker.set_index("numbers_slider")
+    data["pred y"] = temp
+    data = data.set_index("Dates")
+    return a.item(), b.item(), data
+
+
+# Load data
+# df = pd.read_csv(
+#    "https://raw.githubusercontent.com/plotly/datasets/master/finance-charts-apple.csv"
+# )
+# print(df)
+# df.columns = [col.replace("AAPL.", "") for col in df.columns]
+
+
+def create_slider_stock(ticker, from_date, to_date):
+    ticker["Date"] = ticker.index
+
+    # Create figure
+    fig = go.Figure()
+    a, b, data = regression_from_date(ticker, from_date, to_date)
+
+    fig.add_trace(go.Scatter(x=list(ticker.Date), y=list(ticker.High)))
+    fig.add_trace(go.Scatter(x=list(ticker.Date), y=list(ticker.Low)))
+    fig.add_trace(go.Scatter(x=list(data.Date), y=list(data["pred y"])))
+
+    # Set title
+    fig.update_layout(title_text="Time series with range slider and selectors")
+
+    # Add range slider
+    fig.update_layout(
+        xaxis=dict(
+            rangeselector=dict(
+                buttons=list(
+                    [
+                        dict(count=1, label="1m", step="month", stepmode="backward"),
+                        dict(count=6, label="6m", step="month", stepmode="backward"),
+                        dict(count=1, label="YTD", step="year", stepmode="todate"),
+                        dict(count=1, label="1y", step="year", stepmode="backward"),
+                        dict(step="all"),
+                    ]
+                )
+            ),
+            rangeslider=dict(visible=True),
+            type="date",
+        )
+    )
+
+    # fig.show()
+    return fig
+
+
+def generate_double_slider(ticker, ticker_id):
+    @callback(
+        Output("output-container-range-slider" + ticker_id, "figure"),
+        # Output("big-range-slider", "value"),
+        Input("big-range-slider" + ticker_id, "value"),
+    )
+    def update_output(date_number):
+        if date_number == None:
+            date_number = [0, len(ticker) - 1]
+        ticker["Date"] = ticker.index
+        from_date = pd.to_datetime(ticker["Date"].iloc[date_number].iloc[0])
+        to_date = pd.to_datetime(ticker["Date"].iloc[date_number].iloc[1])
+        fig = create_slider_stock(ticker, from_date, to_date)
+        fig.add_vline(x=from_date)
+        fig.add_annotation(x=from_date, text="Start")
+        fig.add_vline(x=to_date)
+        fig.add_annotation(x=to_date, text="End")
+        fig.update_layout(yaxis_range=[ticker["High"].min(), ticker["High"].max()])
+        # fig.show()
+        #
+        return fig
+
+    return update_output
 
 
 def is_not_null_and_in_range(var):
@@ -40,6 +142,11 @@ class DataAnalysisTicker:
             y=["High", "Low"],
             hover_data={"Dates": "|%B %d, %Y"},
             title="Ticker " + self.name_ticker + " displaying High low in days",
+        )
+        self.length_ticker = len(self.ticker_data) - 1
+        self.ticker_id = self.name_ticker.replace(".", "")
+        self.big_call_back_double_slider = generate_double_slider(
+            self.ticker_data, self.ticker_id
         )
 
         # self.fig_with_regression = (
@@ -107,6 +214,19 @@ def get_content_from_DataAnalysisTicker(data: DataAnalysisTicker):
                         "The Name of the Ticker is:" + data.name_ticker,
                         className="text-primary text-center fs-3",
                     )
+                ]
+            ),
+            dbc.Row(
+                [
+                    dcc.RangeSlider(
+                        min=0,
+                        max=data.length_ticker,
+                        id="big-range-slider" + data.ticker_id,
+                    ),
+                    dcc.Graph(
+                        figure={},  # fig,
+                        id="output-container-range-slider" + data.ticker_id,
+                    ),
                 ]
             ),
             dbc.Row(
