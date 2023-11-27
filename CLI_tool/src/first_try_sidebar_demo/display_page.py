@@ -177,7 +177,12 @@ def generate_double_slider(ticker, ticker_id):
         upper_future_bound = (
             ticker["High"][to_date] + a * predict_slider + closure_range[1]
         )
-        fig.update_layout(yaxis_range=[ticker["High"].min(), ticker["High"].max()])
+        fig.update_layout(
+            yaxis_range=[ticker["High"].min(), ticker["High"].max()],
+            title="Analysis Graph",
+            height=700,
+        )
+
         # fig.show()
         #
         return (
