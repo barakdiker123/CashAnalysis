@@ -60,9 +60,9 @@ def create_slider_stock(ticker, from_date, to_date):
     fig = go.Figure()
     a, b, data = regression_from_date(ticker, from_date, to_date)
 
-    fig.add_trace(go.Scatter(x=list(ticker.Date), y=list(ticker.High)))
-    fig.add_trace(go.Scatter(x=list(ticker.Date), y=list(ticker.Low)))
-    fig.add_trace(go.Scatter(x=list(data.Date), y=list(data["pred y"])))
+    fig.add_trace(go.Scatter(x=list(ticker.Date), y=list(ticker.High), name="High"))
+    fig.add_trace(go.Scatter(x=list(ticker.Date), y=list(ticker.Low), name="Low"))
+    fig.add_trace(go.Scatter(x=list(data.Date), y=list(data["pred y"]), name="Regres"))
 
     # Set title
     fig.update_layout(title_text="Time series with range slider and selectors")
@@ -162,6 +162,8 @@ def generate_double_slider(ticker, ticker_id):
                 x=list(reg_line.Date),
                 y=list(reg_line["pred y"] + closure_range[0]),
                 marker_color="blue",
+                name="Down Bar",
+                line=dict(shape="linear", dash="dot"),
             )
         )
         fig.add_trace(
@@ -169,6 +171,8 @@ def generate_double_slider(ticker, ticker_id):
                 x=list(reg_line.Date),
                 y=list(reg_line["pred y"] + closure_range[1]),
                 marker_color="blue",
+                name="Up Bar",
+                line=dict(shape="linear", dash="dot"),
             )
         )
         lower_future_bound = (

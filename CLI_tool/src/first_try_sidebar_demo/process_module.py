@@ -4,7 +4,7 @@ import time
 
 # run This !
 
-cmd = "python frontend.py"
+cmd = "python3 frontend.py"
 while True:
     proc = subprocess.Popen(cmd, shell=True)
     # delay for 10 seconds
