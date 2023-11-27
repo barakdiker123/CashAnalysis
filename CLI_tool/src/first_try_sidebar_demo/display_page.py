@@ -176,10 +176,16 @@ def generate_double_slider(ticker, ticker_id):
             )
         )
         lower_future_bound = (
-            ticker["High"][to_date] + a * predict_slider + closure_range[0]
+            # ticker["High"][to_date] + a * predict_slider + closure_range[0]
+            reg_line["pred y"][to_date]
+            + a * predict_slider
+            + closure_range[0]
         )
         upper_future_bound = (
-            ticker["High"][to_date] + a * predict_slider + closure_range[1]
+            # ticker["High"][to_date] + a * predict_slider + closure_range[1]
+            reg_line["pred y"][to_date]
+            + a * predict_slider
+            + closure_range[1]
         )
         fig.update_layout(
             yaxis_range=[ticker["High"].min(), ticker["High"].max()],
